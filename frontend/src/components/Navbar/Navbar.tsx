@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
-  Button,
   Hidden,
   Drawer,
   IconButton,
@@ -12,8 +11,9 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import Logo from "../Logo/Logo";
+import { NavbarButtons } from "./NavbarButtons";
+import { DrawerMenu } from "./NavbarSideMenu";
 
-// Styling the navbar using MUI's styled function
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   background: "linear-gradient(to right, #060b38, #423a5c, #060b38)",
   padding: theme.spacing(1.5),
@@ -22,7 +22,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: "center",
 }));
 
-const drawerWidth = 200;
+export const drawerWidth = 200;
 
 const buttonStyles = {
   fontFamily: "Montserrat",
@@ -33,42 +33,39 @@ const buttonStyles = {
 };
 
 const Navbar = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false); // State for Drawer open/close
-  const [isMobileView, setIsMobileView] = useState(false); // State for mobile view detection
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {
-    // Effect hook to update isMobileView state based on window width
     const handleResize = () => {
-      setIsMobileView(window.innerWidth < 1150); // Adjusted breakpoint for mobile view
+      setIsMobileView(window.innerWidth < 1150);
     };
 
-    handleResize(); // Initial call to handleResize
-    window.addEventListener("resize", handleResize); // Event listener for window resize
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize); // Cleanup: remove event listener
+      window.removeEventListener("resize", handleResize);
     };
-  }, []); // Empty dependency array ensures effect runs only on mount and unmount
+  }, []);
 
   const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen); // Function to toggle Drawer open/close state
+    setDrawerOpen(!drawerOpen);
   };
 
   const handleDrawerItemClick = () => {
-    setDrawerOpen(false); // Function to close Drawer when an item is clicked
+    setDrawerOpen(false);
   };
 
   return (
     <AppBar position="static">
       <StyledToolbar>
-        {/* North Dine logo */}
         <div style={{ position: "absolute", left: "20px" }}>
           <Link to="/">
-            <Logo color="white" size={200} />
+            <Logo color="white" size={225} />
           </Link>
         </div>
 
-        {/* Side drawer icon for smaller screens (hidden on larger screens) */}
         <Hidden lgUp>
           <IconButton
             edge="end"
@@ -85,124 +82,18 @@ const Navbar = () => {
           </IconButton>
         </Hidden>
 
-        {/* Centered navbar buttons for larger screens (hidden on smaller screens) */}
         <Hidden mdDown>
-          <div
-            style={{
-              marginLeft: "auto",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flex: 1,
-            }}
-          >
-            <Button
-              component={Link}
-              to="/"
-              color="inherit"
-              sx={
-                !isMobileView
-                  ? buttonStyles
-                  : { ...buttonStyles, visibility: "hidden" }
-              }
-            >
-              Home
-            </Button>
-            <Button
-              component={Link}
-              to="/menu"
-              color="inherit"
-              sx={
-                !isMobileView
-                  ? buttonStyles
-                  : { ...buttonStyles, visibility: "hidden" }
-              }
-            >
-              Menu
-            </Button>
-            <Button
-              component={Link}
-              to="/locations"
-              color="inherit"
-              sx={
-                !isMobileView
-                  ? buttonStyles
-                  : { ...buttonStyles, visibility: "hidden" }
-              }
-            >
-              Locations
-            </Button>
-            <Button
-              component={Link}
-              to="/aboutus"
-              color="inherit"
-              sx={
-                !isMobileView
-                  ? buttonStyles
-                  : { ...buttonStyles, visibility: "hidden" }
-              }
-            >
-              About Us
-            </Button>
-          </div>
+          <NavbarButtons
+            isMobileView={isMobileView}
+            buttonStyles={buttonStyles}
+          />
         </Hidden>
 
-        {/* Side drawer for smaller screens + its buttons */}
         <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
-          <div style={{ width: drawerWidth, padding: "20px 10px" }}>
-            <Button
-              component={Link}
-              to="/"
-              color="inherit"
-              sx={{
-                ...buttonStyles,
-                "&:hover": { fontWeight: "bold" },
-                marginBottom: 3,
-              }}
-              onClick={handleDrawerItemClick}
-            >
-              Home
-            </Button>
-            <Button
-              component={Link}
-              to="/menu"
-              color="inherit"
-              sx={{
-                ...buttonStyles,
-                "&:hover": { fontWeight: "bold" },
-                marginBottom: 3,
-              }}
-              onClick={handleDrawerItemClick}
-            >
-              Menu
-            </Button>
-            <Button
-              component={Link}
-              to="/locations"
-              color="inherit"
-              sx={{
-                ...buttonStyles,
-                "&:hover": { fontWeight: "bold" },
-                marginBottom: 3,
-              }}
-              onClick={handleDrawerItemClick}
-            >
-              Locations
-            </Button>
-            <Button
-              component={Link}
-              to="/aboutus"
-              color="inherit"
-              sx={{
-                ...buttonStyles,
-                "&:hover": { fontWeight: "bold" },
-                marginBottom: 3,
-              }}
-              onClick={handleDrawerItemClick}
-            >
-              About Us
-            </Button>
-          </div>
+          <DrawerMenu
+            buttonStyles={buttonStyles}
+            onClick={handleDrawerItemClick}
+          />
         </Drawer>
       </StyledToolbar>
     </AppBar>
