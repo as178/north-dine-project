@@ -1,13 +1,11 @@
-import React from "react";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
 interface DrawerMenuProps {
+  drawerWidth: number;
   buttonStyles: React.CSSProperties;
   onClick?: () => void;
 }
-
-import { drawerWidth } from "./Navbar";
 
 const menuItems = [
   { label: "Home", to: "/" },
@@ -17,10 +15,11 @@ const menuItems = [
 ];
 
 export const DrawerMenu: React.FC<DrawerMenuProps> = ({
+  drawerWidth,
   buttonStyles,
   onClick,
 }) => {
-  const buttonTextColor = "#060b38"; // Define your desired text color here
+  const buttonTextColor = "#060b38";
 
   return (
     <div style={{ width: drawerWidth, padding: "20px 10px" }}>
@@ -33,10 +32,14 @@ export const DrawerMenu: React.FC<DrawerMenuProps> = ({
           sx={{
             ...buttonStyles,
             color: buttonTextColor,
-            "&:hover": { fontWeight: "bold" },
+            "&:hover": {
+              fontWeight: "bold",
+              backgroundColor: "transparent",
+            },
             marginBottom: 3,
           }}
           onClick={onClick}
+          disableTouchRipple
         >
           {item.label}
         </Button>

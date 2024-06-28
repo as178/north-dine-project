@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -13,6 +12,21 @@ const buttonData = [
   { label: "Locations", to: "/locations" },
   { label: "About Us", to: "/aboutus" },
 ];
+
+export const buttonStyles = {
+  fontFamily: "Montserrat",
+  fontSize: "1.13rem",
+  marginX: 3,
+  paddingX: 3,
+  transition: "opacity 0.2s ease",
+  "&:hover": {
+    textShadow: "0 0 8px #ffffff",
+    backgroundColor: "transparent",
+  },
+  "&:active": {
+    opacity: 0.5,
+  },
+};
 
 export const NavbarButtons: React.FC<NavbarButtonsProps> = ({
   isMobileView,
@@ -39,6 +53,7 @@ export const NavbarButtons: React.FC<NavbarButtonsProps> = ({
               ? buttonStyles
               : { ...buttonStyles, visibility: "hidden" }
           }
+          disableTouchRipple
         >
           {button.label}
         </Button>

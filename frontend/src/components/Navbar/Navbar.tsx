@@ -11,26 +11,18 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import Logo from "../Logo/Logo";
-import { NavbarButtons } from "./NavbarButtons";
-import { DrawerMenu } from "./NavbarSideMenu";
+import { buttonStyles, NavbarButtons } from "./NavbarButtons";
+import { DrawerMenu } from "./NavbarDrawerMenu";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  background: "linear-gradient(to right, #060b38, #423a5c, #060b38)",
+  background:
+    "linear-gradient(to right, #04061a, #060b38, #423a5c, #060b38, #04061a)",
   padding: theme.spacing(1.5),
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  boxShadow: "0px 15px 20px rgba(1, 4, 31, 0.5)",
 }));
-
-export const drawerWidth = 200;
-
-const buttonStyles = {
-  fontFamily: "Montserrat",
-  fontSize: "1.13rem",
-  marginX: 3,
-  paddingX: 3,
-  "&:hover": { textShadow: "0 0 8px #ffffff" },
-};
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -58,7 +50,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="absolute">
       <StyledToolbar>
         <div style={{ position: "absolute", left: "20px" }}>
           <Link to="/">
@@ -93,6 +85,7 @@ const Navbar = () => {
           <DrawerMenu
             buttonStyles={buttonStyles}
             onClick={handleDrawerItemClick}
+            drawerWidth={200}
           />
         </Drawer>
       </StyledToolbar>
