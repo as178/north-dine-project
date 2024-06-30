@@ -9,3 +9,22 @@ body {
 .quicksand-font {
   font-family: 'Quicksand', sans-serif;
 }
+
+/*Scrollbar*/
+::-webkit-scrollbar {
+  width: 2px; 
+  background-color: #0e0d0d; 
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #a89a8e; 
+  border-radius: 4px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #dbc5b2; 
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent; 
+}

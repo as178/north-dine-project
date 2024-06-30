@@ -9,7 +9,8 @@ interface ReserveButtonProps {
 export const homeButtonStyle = {
   fontFamily: "Montserrat",
   fontSize: "1.8rem",
-  marginBottom: "-110px",
+  margin: "auto",
+  top: "40px",
   transition: "opacity 0.2s ease",
   border: "0.5px solid transparent",
   borderRadius: "8px",
