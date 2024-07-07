@@ -9,7 +9,7 @@ interface NavbarButtonsProps {
 const buttonData = [
   { label: "Home", to: "/" },
   { label: "Menu", to: "/menu" },
-  { label: "Locations", to: "/locations" },
+  { label: "Cart", to: "/cart" },
   { label: "About Us", to: "/aboutus" },
 ];
 

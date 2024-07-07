@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
-interface ReserveButtonProps {
+interface MenuButtonProps {
   buttonStyles: React.CSSProperties;
 }
 
@@ -25,18 +25,18 @@ export const homeButtonStyle = {
   },
 };
 
-const ReserveButton: React.FC<ReserveButtonProps> = ({ buttonStyles }) => {
+const MenuButton: React.FC<MenuButtonProps> = ({ buttonStyles }) => {
   return (
     <Button
       component={Link}
-      to="/reserve"
+      to="/menu"
       color="inherit"
       sx={buttonStyles}
       disableTouchRipple
     >
-      RESERVE A TABLE
+      SEE OUR MENU
     </Button>
   );
 };
 
-export default ReserveButton;
+export default MenuButton;

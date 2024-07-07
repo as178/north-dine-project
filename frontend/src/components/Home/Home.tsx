@@ -5,16 +5,18 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Box,
 } from "@mui/material";
-import ReserveButton, { homeButtonStyle } from "./ReserveButton";
+import MenuButton, { homeButtonStyle } from "./MenuButton";
 import BackgroundImage from "./BackgroundImage";
 import GradientOverlay from "./GradientOverlay";
 import CardImage from "./CardImage";
-import ReviewCard from "./CardReview"; // Import the ReviewCard component
+import ReviewCard from "./CardReview";
 
 const Home: React.FC = () => {
   const [animate, setAnimate] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isSectionThreeVisible, setIsSectionThreeVisible] = useState(false);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -23,20 +25,30 @@ const Home: React.FC = () => {
 
     const handleScroll = () => {
       const sectionTwo = document.getElementById("section-two");
+      const sectionThree = document.getElementById("section-three");
+      const scrollPosition = window.scrollY + window.innerHeight;
+
       if (sectionTwo && !isVisible) {
         const topOffset = sectionTwo.offsetTop;
-        const scrollPosition = window.scrollY + window.innerHeight;
         if (scrollPosition > topOffset) {
           setIsVisible(true);
+        }
+      }
+
+      if (sectionThree && !isSectionThreeVisible) {
+        const topOffset = sectionThree.offsetTop;
+        if (scrollPosition > topOffset) {
+          setIsSectionThreeVisible(true);
         }
       }
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isVisible]);
+  }, [isVisible, isSectionThreeVisible]);
 
   const sectionOneStyles = {
     display: "flex",
@@ -50,6 +62,8 @@ const Home: React.FC = () => {
 
   const sectionTwoStyles = {
     py: 4,
+    transition: "opacity 3s ease",
+    opacity: isVisible ? 1 : 0,
   };
 
   const cardImageStyles = {
@@ -82,24 +96,36 @@ const Home: React.FC = () => {
     {
       title: "Loved it!",
       body: "A wonderful place for a family dinner. The service was impeccable.",
+      user: {
+        name: "John",
+        initial: "J",
+      },
     },
     {
       title: "Fantastic Service!",
       body: "The staff were friendly and attentive. I will definitely be back!",
+      user: {
+        name: "Emma",
+        initial: "E",
+      },
     },
     {
       title: "Delicious Food!",
       body: "Every dish we tried was amazing. The flavors were on point.",
+      user: {
+        name: "Michael",
+        initial: "M",
+      },
     },
   ];
 
   const sectionThreeStyles = {
     display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    flexDirection: "column",
     alignItems: "center",
     padding: "40px 0",
+    transition: "opacity 4s ease",
+    opacity: isSectionThreeVisible ? 1 : 0,
   };
 
   return (
@@ -141,7 +167,7 @@ const Home: React.FC = () => {
               evening, expect impeccable service and a warm, inviting ambiance
               that elevates every visit.
             </Typography>
-            <ReserveButton buttonStyles={homeButtonStyle} />
+            <MenuButton buttonStyles={homeButtonStyle} />
           </Container>
         </GradientOverlay>
       </BackgroundImage>
@@ -211,6 +237,7 @@ const Home: React.FC = () => {
 
       {/* Section Three */}
       <BackgroundImage
+        id="section-three"
         imageUrl="/images/home3.jpg"
         height="612px"
         top="1312px"
@@ -218,14 +245,57 @@ const Home: React.FC = () => {
         backgroundPosition="center bottom"
       >
         <GradientOverlay
-          colors="linear-gradient(to top, rgba(6, 11, 56, 0.3), rgba(6, 11, 56, 0.7))"
+          colors="linear-gradient(to top, rgba(6, 11, 56, 0.3), rgba(6, 11, 56, 0.85))"
           backgroundSize="cover"
           backgroundPosition="center bottom"
         >
-          <Container maxWidth="xl" sx={sectionThreeStyles}>
-            {reviews.map((review, index) => (
-              <ReviewCard key={index} title={review.title} body={review.body} />
-            ))}
+          <Container
+            maxWidth="xl"
+            sx={{ ...sectionThreeStyles, padding: "0 16px" }}
+          >
+            <Box sx={{ textAlign: "center", marginBottom: "20px" }}>
+              <Typography
+                variant="h1"
+                gutterBottom
+                sx={{
+                  fontFamily: "Montserrat, sans-serif",
+                  fontSize: { xs: "2.4rem", sm: "3.5rem" },
+                  lineHeight: "1.2",
+                  textAlign: "center",
+                }}
+              >
+                OUR CUSTOMERS' COMMENTARY
+              </Typography>
+            </Box>
+            <Grid
+              container
+              spacing={2}
+              alignItems="center"
+              justifyContent="center"
+            >
+              {reviews.map((review, index) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  key={index}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
+                  <ReviewCard
+                    title={review.title}
+                    body={review.body}
+                    user={review.user}
+                    sx={{
+                      maxWidth: { xs: "90%", sm: "100%" },
+                      margin: "0 auto",
+                      padding: { xs: "16px", sm: "24px" },
+                      fontSize: { xs: "0.875rem", sm: "1rem" },
+                    }}
+                  />
+                </Grid>
+              ))}
+            </Grid>
           </Container>
         </GradientOverlay>
       </BackgroundImage>
