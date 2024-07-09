@@ -30,12 +30,20 @@ const ModalCard: React.FC<ModalCardProps> = ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "80%",
-    maxWidth: "800px",
+    maxWidth: "570px",
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
     borderRadius: "20px",
-    overflow: "hidden",
+    overflowY: "auto",
+    maxHeight: "90vh",
+  };
+
+  const cardMediaStyles = {
+    height: "400px",
+    width: "100%",
+    objectFit: "cover",
+    borderRadius: "10px",
   };
 
   if (!item) return null;
@@ -54,7 +62,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
           sx={{
             fontFamily: "Montserrat, sans-serif",
             textTransform: "uppercase",
-            fontSize: "2rem",
+            fontSize: "1.8rem",
             color: "#1c1a40",
             marginBottom: "20px",
           }}
@@ -66,14 +74,14 @@ const ModalCard: React.FC<ModalCardProps> = ({
           height="auto"
           image={item.imageUrl}
           alt={item.title}
-          sx={{ width: "100%", borderRadius: "10px" }}
+          sx={cardMediaStyles}
         />
         <CardContent>
           <Typography
             variant="body1"
             sx={{
               fontFamily: "Quicksand, sans-serif",
-              fontSize: "1.2rem",
+              fontSize: "1rem",
               lineHeight: "1.6",
               color: "#1c1a40",
               marginTop: "20px",
@@ -85,8 +93,9 @@ const ModalCard: React.FC<ModalCardProps> = ({
             variant="body1"
             sx={{
               fontFamily: "Montserrat, sans-serif",
+              fontWeight: "550",
               textTransform: "uppercase",
-              fontSize: "1.2rem",
+              fontSize: "1rem",
               color: "#1c1a40",
               marginTop: "30px",
             }}
@@ -101,7 +110,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
                 sx={{
                   fontFamily: "Montserrat, sans-serif",
                   textTransform: "uppercase",
-                  fontSize: "1rem",
+                  fontSize: "0.9rem",
                   color: "#1c1a40",
                 }}
               >
@@ -122,7 +131,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
             },
           }}
         >
-          Close
+          Add to Reservation
         </Button>
       </Box>
     </Modal>

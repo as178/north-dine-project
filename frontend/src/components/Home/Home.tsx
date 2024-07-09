@@ -119,15 +119,6 @@ const Home: React.FC = () => {
     },
   ];
 
-  const sectionThreeStyles = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: "40px 0",
-    transition: "opacity 4s ease",
-    opacity: isSectionThreeVisible ? 1 : 0,
-  };
-
   return (
     <>
       {/* Section One */}
@@ -244,15 +235,21 @@ const Home: React.FC = () => {
         backgroundSize="cover"
         backgroundPosition="center bottom"
       >
-        <GradientOverlay
-          colors="linear-gradient(to top, rgba(6, 11, 56, 0.3), rgba(6, 11, 56, 0.85))"
-          backgroundSize="cover"
-          backgroundPosition="center bottom"
+        {/* Use Box instead of GradientOverlay for scrollable content */}
+        <Box
+          component="div"
+          sx={{
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            overflowY: "auto", // Apply scrollable overflow here
+            backgroundImage:
+              "linear-gradient(to top, rgba(6, 11, 56, 0.3), rgba(6, 11, 56, 0.85))",
+            backgroundSize: "cover",
+            backgroundPosition: "center bottom",
+          }}
         >
-          <Container
-            maxWidth="xl"
-            sx={{ ...sectionThreeStyles, padding: "0 16px" }}
-          >
+          <Container maxWidth="xl" sx={{ padding: "0 16px" }}>
             <Box sx={{ textAlign: "center", marginBottom: "20px" }}>
               <Typography
                 variant="h1"
@@ -262,6 +259,9 @@ const Home: React.FC = () => {
                   fontSize: { xs: "2.4rem", sm: "3.5rem" },
                   lineHeight: "1.2",
                   textAlign: "center",
+                  color: "#FFFFFF", // Adjust text color as needed
+                  marginTop: "100px",
+                  marginBottom: "50px",
                 }}
               >
                 OUR CUSTOMERS' COMMENTARY
@@ -297,7 +297,7 @@ const Home: React.FC = () => {
               ))}
             </Grid>
           </Container>
-        </GradientOverlay>
+        </Box>
       </BackgroundImage>
     </>
   );

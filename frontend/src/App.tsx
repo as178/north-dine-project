@@ -4,7 +4,7 @@ import Home from "./components/Home/Home";
 import AboutUs from "./components/AboutUs/AboutUs";
 import Menu from "./components/Menu/Menu";
 import Navbar from "./components/Navbar/Navbar";
-import Cart from "./components/Cart/Cart";
+import Reservation from "./components/Reservation/Reservation";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="aboutus" element={<AboutUs />} />
         <Route path="menu" element={<Menu />} />
-        <Route path="cart" element={<Cart />} />
+        <Route path="reservation" element={<Reservation />} />
       </Routes>
     </>
   );

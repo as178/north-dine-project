@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Modal,
-  Button,
-  Box,
-} from "@mui/material";
+import { Container, Typography, Grid, Box } from "@mui/material";
 import BackgroundImage from "../Home/BackgroundImage";
 import GradientOverlay from "../Home/GradientOverlay";
 import CardComponent from "./MenuCard";
