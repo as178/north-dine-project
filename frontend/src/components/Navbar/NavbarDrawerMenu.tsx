@@ -10,7 +10,7 @@ interface DrawerMenuProps {
 const menuItems = [
   { label: "Home", to: "/" },
   { label: "Menu", to: "/menu" },
-  { label: "Cart", to: "/cart" },
+  { label: "Your Reservation", to: "/reservation" },
   { label: "About Us", to: "/aboutus" },
 ];
 

@@ -14,6 +14,7 @@ interface ModalCardProps {
     imageUrl: string;
     description: string;
     ingredients: string[];
+    price: number;
   } | null;
   modalOpen: boolean;
   closeModal: () => void;
@@ -118,6 +119,19 @@ const ModalCard: React.FC<ModalCardProps> = ({
               </Typography>
             ))}
           </Box>
+          <Typography
+            variant="h6"
+            sx={{
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: "550",
+              textTransform: "uppercase",
+              fontSize: "1.1rem",
+              color: "#1c1a40",
+              marginTop: "20px",
+            }}
+          >
+            NZ${item.price.toFixed(2)}
+          </Typography>
         </CardContent>
         <Button
           onClick={closeModal}

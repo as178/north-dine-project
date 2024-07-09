@@ -47,6 +47,7 @@ const Menu: React.FC = () => {
           "Fresh Basil",
           "Truffle-infused Olive Oil",
         ],
+        price: 45.0,
       },
       {
         title: "Lobster Thermidor",
@@ -61,6 +62,7 @@ const Menu: React.FC = () => {
           "Dijon Mustard",
           "Fresh Herbs",
         ],
+        price: 70.0,
       },
       {
         title: "Seafood Risotto",
@@ -76,6 +78,7 @@ const Menu: React.FC = () => {
           "Parmesan Cheese",
           "Fresh Herbs",
         ],
+        price: 55.0,
       },
       {
         title: "Grilled Chicken Caesar Salad",
@@ -88,6 +91,7 @@ const Menu: React.FC = () => {
           "Parmesan Cheese",
           "Croutons",
         ],
+        price: 25.0,
       },
       {
         title: "Filet Mignon",
@@ -100,6 +104,7 @@ const Menu: React.FC = () => {
           "Seasonal Vegetables",
           "Mashed Potatoes",
         ],
+        price: 80.0,
       },
       {
         title: "Beef Wellington",
@@ -113,6 +118,7 @@ const Menu: React.FC = () => {
           "Puff Pastry",
           "Madeira Sauce",
         ],
+        price: 90.0,
       },
     ],
     drinks: [
@@ -122,14 +128,15 @@ const Menu: React.FC = () => {
         description:
           "A refreshing cocktail made with vodka, spicy ginger beer, and lime juice, served in a copper mug with ice.",
         ingredients: ["Vodka", "Ginger Beer", "Lime Juice", "Ice"],
+        price: 18.0,
       },
-
       {
         title: "Negroni",
         imageUrl: "/images/negroni.jpeg",
         description:
           "A sophisticated Italian cocktail made with gin, vermouth rosso, and Campari, served over ice with an orange twist.",
         ingredients: ["Gin", "Vermouth Rosso", "Campari", "Orange Twist"],
+        price: 20.0,
       },
       {
         title: "French 75",
@@ -137,6 +144,7 @@ const Menu: React.FC = () => {
         description:
           "A refreshing champagne cocktail made with gin, lemon juice, sugar, and topped with champagne.",
         ingredients: ["Gin", "Lemon Juice", "Simple Syrup", "Champagne"],
+        price: 22.0,
       },
       {
         title: "Martini",
@@ -144,6 +152,7 @@ const Menu: React.FC = () => {
         description:
           "A sophisticated cocktail made with gin or vodka and vermouth, garnished with an olive or a twist of lemon.",
         ingredients: ["Gin or Vodka", "Dry Vermouth", "Olive or Lemon Twist"],
+        price: 20.0,
       },
       {
         title: "Mojito",
@@ -157,6 +166,7 @@ const Menu: React.FC = () => {
           "Sugar",
           "Soda Water",
         ],
+        price: 18.0,
       },
       {
         title: "Whiskey Sour",
@@ -164,6 +174,7 @@ const Menu: React.FC = () => {
         description:
           "A whiskey-based cocktail made with bourbon or rye whiskey, lemon juice, and simple syrup.",
         ingredients: ["Bourbon or Rye Whiskey", "Lemon Juice", "Simple Syrup"],
+        price: 20.0,
       },
     ],
   };
