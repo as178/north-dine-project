@@ -10,7 +10,6 @@ const buttonData = [
   { label: "Home", to: "/" },
   { label: "Menu", to: "/menu" },
   { label: "Your Reservation", to: "/reservation" },
-  { label: "About Us", to: "/aboutus" },
 ];
 
 export const buttonStyles = {
