@@ -195,7 +195,7 @@ const Home: React.FC = () => {
                     imageUrl="/images/home4.jpg"
                     imageHeight={isSmallScreen ? 200 : 400}
                     cardStyle={cardImageStyles}
-                    overlayGradient="linear-gradient(to top right, rgba(43, 24, 140, 1), rgba(43, 24, 140, 0.9), rgba(6, 11, 56, 0))" // Define your gradient here
+                    overlayGradient="linear-gradient(to top right, rgba(43, 24, 140, 1), rgba(43, 24, 140, 0.9), rgba(6, 11, 56, 0))"
                   />
                 </Container>
               </Grid>
@@ -235,14 +235,13 @@ const Home: React.FC = () => {
         backgroundSize="cover"
         backgroundPosition="center bottom"
       >
-        {/* Use Box instead of GradientOverlay for scrollable content */}
         <Box
           component="div"
           sx={{
             position: "relative",
             width: "100%",
             height: "100%",
-            overflowY: "auto", // Apply scrollable overflow here
+            overflowY: "auto",
             backgroundImage:
               "linear-gradient(to top, rgba(6, 11, 56, 0.3), rgba(6, 11, 56, 0.85))",
             backgroundSize: "cover",
@@ -259,7 +258,7 @@ const Home: React.FC = () => {
                   fontSize: { xs: "2.4rem", sm: "3.5rem" },
                   lineHeight: "1.2",
                   textAlign: "center",
-                  color: "#FFFFFF", // Adjust text color as needed
+                  color: "#FFFFFF",
                   marginTop: "100px",
                   marginBottom: "50px",
                 }}

@@ -1,9 +1,5 @@
-// Reservation.tsx
-
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid, Box } from "@mui/material";
-import BackgroundImage from "../Home/BackgroundImage";
-import GradientOverlay from "../Home/GradientOverlay";
 import ReservationCard from "./ReservationCard";
 import ReservationForm from "./ReservationForm";
 
@@ -25,24 +21,9 @@ const Reservation: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const containerStyles = {
-    minHeight: "100vh", // Ensure full viewport height
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    paddingTop: "250px", // Initial padding for desktop view
-    opacity: fadeIn ? 1 : 0,
-    transition: "opacity 1.5s ease-in-out",
-    overflowY: "auto", // Allow vertical scrolling
-    "@media (max-width: 600px)": {
-      paddingTop: "350px", // Adjusted padding for mobile view
-    },
-  };
-
   const gradientColors =
     "linear-gradient(to top, rgba(6, 11, 60, 1), rgba(6, 11, 30, 0.9), rgba(6, 11, 56, 0.65))";
 
-  // Mock reservations for demonstration
   const reservations: ReservationItem[] = [
     {
       title: "Truffle Pizza",
@@ -74,18 +55,85 @@ const Reservation: React.FC = () => {
       totalPrice: 80.0,
       imageUrl: "/images/filetmignon.jpeg",
     },
+    {
+      title: "Beef Wellington",
+      quantity: 1,
+      totalPrice: 90.0,
+      imageUrl: "/images/beefwellington.jpeg",
+    },
+    {
+      title: "Moscow Mule",
+      quantity: 1,
+      totalPrice: 18.0,
+      imageUrl: "/images/moscowmule.jpeg",
+    },
+    {
+      title: "Negroni",
+      quantity: 1,
+      totalPrice: 20.0,
+      imageUrl: "/images/negroni.jpeg",
+    },
+    {
+      title: "French 75",
+      quantity: 1,
+      totalPrice: 22.0,
+      imageUrl: "/images/french75.jpeg",
+    },
+    {
+      title: "Martini",
+      quantity: 1,
+      totalPrice: 20.0,
+      imageUrl: "/images/martini.jpeg",
+    },
   ];
 
   return (
-    <BackgroundImage imageUrl="/images/reservation1.jpg" height="100vh">
-      <GradientOverlay colors={gradientColors}>
-        <Container
-          maxWidth="xl"
-          sx={{
-            ...containerStyles,
-            overflowY: "scroll", // Ensure the entire container is scrollable
-          }}
-        >
+    <Box
+      sx={{
+        position: "relative",
+        zIndex: 0,
+        overflow: "auto",
+      }}
+    >
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: -1,
+          backgroundImage: `url('/images/reservation1.jpg')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: -1,
+          backgroundImage: gradientColors,
+          opacity: 0.9,
+        }}
+      />
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 0,
+          minHeight: "100vh",
+          paddingTop: "150px",
+          opacity: fadeIn ? 1 : 0,
+          transition: "opacity 1.5s ease-in-out",
+          "@media (max-width: 600px)": {
+            paddingTop: "150px",
+          },
+        }}
+      >
+        <Container maxWidth="xl">
           <Typography
             variant="h1"
             gutterBottom
@@ -115,7 +163,6 @@ const Reservation: React.FC = () => {
           </Typography>
           <Grid container spacing={4} justifyContent="flex-start">
             <Grid item xs={12} md={6}>
-              {/* Your Reservation Items */}
               <Typography
                 variant="h3"
                 sx={{
@@ -137,8 +184,8 @@ const Reservation: React.FC = () => {
                     md: "repeat(3, 1fr)",
                   },
                   gap: "20px",
-                  maxHeight: "70vh", // Limit height to allow scrolling
-                  overflowY: "auto", // Enable vertical scrolling
+                  maxHeight: "70vh",
+                  overflowY: "auto",
                 }}
               >
                 {reservations.map((item, index) => (
@@ -147,13 +194,12 @@ const Reservation: React.FC = () => {
               </Box>
             </Grid>
             <Grid item xs={12} md={6}>
-              {/* Your Reservation Form */}
               <ReservationForm />
             </Grid>
           </Grid>
         </Container>
-      </GradientOverlay>
-    </BackgroundImage>
+      </Box>
+    </Box>
   );
 };
 
