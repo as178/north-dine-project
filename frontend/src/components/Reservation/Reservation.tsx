@@ -12,19 +12,7 @@ interface ReservationItem {
 
 const Reservation: React.FC = () => {
   const [fadeIn, setFadeIn] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setFadeIn(true);
-    }, 200);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
-  const gradientColors =
-    "linear-gradient(to top, rgba(6, 11, 60, 1), rgba(6, 11, 30, 0.9), rgba(6, 11, 56, 0.65))";
-
-  const reservations: ReservationItem[] = [
+  const [reservations, setReservations] = useState<ReservationItem[]>([
     {
       title: "Truffle Pizza",
       quantity: 1,
@@ -85,7 +73,24 @@ const Reservation: React.FC = () => {
       totalPrice: 20.0,
       imageUrl: "/images/martini.jpeg",
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setFadeIn(true);
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  const gradientColors =
+    "linear-gradient(to top, rgba(6, 11, 60, 1), rgba(6, 11, 30, 0.9), rgba(6, 11, 56, 0.65))";
+
+  const handleDeleteItem = (index: number) => {
+    setReservations((prevReservations) =>
+      prevReservations.filter((_, i) => i !== index)
+    );
+  };
 
   return (
     <Box
@@ -189,7 +194,12 @@ const Reservation: React.FC = () => {
                 }}
               >
                 {reservations.map((item, index) => (
-                  <ReservationCard key={index} item={item} index={index} />
+                  <ReservationCard
+                    key={index}
+                    item={item}
+                    index={index}
+                    onDelete={handleDeleteItem}
+                  />
                 ))}
               </Box>
             </Grid>
