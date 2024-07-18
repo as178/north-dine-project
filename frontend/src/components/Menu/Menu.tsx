@@ -214,7 +214,7 @@ const Menu: React.FC = () => {
                   gutterBottom
                   sx={{
                     fontFamily: "Montserrat, sans-serif",
-                    fontSize: { xs: "3rem", sm: "4rem" },
+                    fontSize: { xs: "3rem", sm: "3.5rem" },
                     lineHeight: "1.2",
                     color: "#ffffff",
                   }}
@@ -236,7 +236,7 @@ const Menu: React.FC = () => {
                   gutterBottom
                   sx={{
                     fontFamily: "Montserrat, sans-serif",
-                    fontSize: { xs: "3rem", sm: "4rem" },
+                    fontSize: { xs: "3rem", sm: "3.5rem" },
                     lineHeight: "1.2",
                     marginTop: "40px",
                     color: "#ffffff",

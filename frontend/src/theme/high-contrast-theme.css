@@ -1,0 +1,49 @@
+/* Main */
+.high-contrast-theme {
+  filter: contrast(150%) brightness(90%) saturate(50%);
+}
+
+.high-contrast-theme * {
+  color: #ffffff; 
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5); 
+}
+
+.high-contrast-theme a {
+  color: #ffffff; 
+}
+
+
+/* Navbar */
+.high-contrast-theme .navbar {
+  background: linear-gradient(to right, #1a1a1a, #333333, #1a1a1a); 
+}
+
+
+/* Reservation */
+.high-contrast-theme .reservation-page * {
+  color: #000000; 
+  filter: brightness(90%); 
+}
+
+.high-contrast-theme .reservation-page button {
+  color: #ffffff; 
+}
+
+
+/* Menu */
+.high-contrast-theme .menu-card {
+  filter: brightness(80%); 
+}
+
+.high-contrast-theme .menu-card-title {
+  color: #000000; 
+  font-weight: bold; 
+}
+
+.high-contrast-theme .menu-card-description {
+  color: #000000; 
+}
+
+.high-contrast-theme .menu-card-button {
+  color: #ffffff; 
+}

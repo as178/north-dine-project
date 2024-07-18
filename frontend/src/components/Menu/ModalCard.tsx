@@ -8,12 +8,17 @@ import {
   Box,
 } from "@mui/material";
 
+interface Ingredient {
+  id: number;
+  name: string;
+}
+
 interface ModalCardProps {
   item: {
     title: string;
     imageUrl: string;
     description: string;
-    ingredients: string[];
+    ingredients: Ingredient[];
     price: number;
   } | null;
   modalOpen: boolean;
@@ -26,7 +31,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
   closeModal,
 }) => {
   const modalContentStyles = {
-    position: "absolute",
+    position: "absolute" as const,
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
@@ -36,7 +41,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
     boxShadow: 24,
     p: 4,
     borderRadius: "20px",
-    overflowY: "auto",
+    overflowY: "auto" as const,
     maxHeight: "90vh",
   };
 
@@ -56,7 +61,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={modalContentStyles}>
+      <Box sx={modalContentStyles} className="menu-card">
         <Typography
           variant="h3"
           gutterBottom
@@ -66,7 +71,9 @@ const ModalCard: React.FC<ModalCardProps> = ({
             fontSize: "1.8rem",
             color: "#1c1a40",
             marginBottom: "20px",
+            fontWeight: "bold",
           }}
+          className="menu-card-title"
         >
           {item.title}
         </Typography>
@@ -87,6 +94,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
               color: "#1c1a40",
               marginTop: "20px",
             }}
+            className="menu-card-description"
           >
             {item.description}
           </Typography>
@@ -94,19 +102,20 @@ const ModalCard: React.FC<ModalCardProps> = ({
             variant="body1"
             sx={{
               fontFamily: "Montserrat, sans-serif",
-              fontWeight: "550",
+              fontWeight: "bold",
               textTransform: "uppercase",
               fontSize: "1rem",
               color: "#1c1a40",
               marginTop: "30px",
             }}
+            className="menu-card-title"
           >
             Ingredients
           </Typography>
           <Box sx={{ marginTop: "10px" }}>
-            {item.ingredients.map((ingredient, index) => (
+            {item.ingredients.map((ingredient) => (
               <Typography
-                key={index}
+                key={ingredient.id}
                 variant="body1"
                 sx={{
                   fontFamily: "Montserrat, sans-serif",
@@ -114,8 +123,9 @@ const ModalCard: React.FC<ModalCardProps> = ({
                   fontSize: "0.9rem",
                   color: "#1c1a40",
                 }}
+                className="menu-card-description"
               >
-                {ingredient}
+                {ingredient.name}
               </Typography>
             ))}
           </Box>
@@ -123,12 +133,13 @@ const ModalCard: React.FC<ModalCardProps> = ({
             variant="h6"
             sx={{
               fontFamily: "Montserrat, sans-serif",
-              fontWeight: "550",
+              fontWeight: "bold",
               textTransform: "uppercase",
               fontSize: "1.1rem",
               color: "#1c1a40",
               marginTop: "20px",
             }}
+            className="menu-card-title"
           >
             NZ${item.price.toFixed(2)}
           </Typography>
@@ -144,6 +155,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
               backgroundColor: "#141229",
             },
           }}
+          className="menu-card-button"
         >
           Add to Reservation
         </Button>

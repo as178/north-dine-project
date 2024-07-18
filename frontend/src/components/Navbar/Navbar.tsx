@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
   Hidden,
-  Drawer,
   IconButton,
   styled,
+  Drawer,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import Brightness3Icon from "@mui/icons-material/Brightness3";
 import Logo from "../Logo/Logo";
+import { Link } from "react-router-dom";
 import { buttonStyles, NavbarButtons } from "./NavbarButtons";
 import { DrawerMenu } from "./NavbarDrawerMenu";
 
@@ -24,9 +25,19 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   boxShadow: "0px 15px 20px rgba(1, 4, 31, 0.5)",
 }));
 
-const Navbar = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(false);
+const Navbar: React.FC = () => {
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [isMobileView, setIsMobileView] = useState<boolean>(false);
+  const [isHighContrast, setIsHighContrast] = useState<boolean>(false); // State for high contrast mode
+
+  // Function to toggle high contrast mode
+  const toggleHighContrast = () => {
+    setIsHighContrast(!isHighContrast);
+    document.documentElement.classList.toggle(
+      "high-contrast-theme",
+      !isHighContrast
+    );
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -80,6 +91,16 @@ const Navbar = () => {
             buttonStyles={buttonStyles}
           />
         </Hidden>
+
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="toggle theme"
+          onClick={toggleHighContrast}
+          sx={{ position: "absolute", right: "80px" }} // Adjust position as needed
+        >
+          <Brightness3Icon color={isHighContrast ? "primary" : "inherit"} />
+        </IconButton>
 
         <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
           <DrawerMenu

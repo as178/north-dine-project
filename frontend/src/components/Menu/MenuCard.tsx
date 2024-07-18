@@ -75,14 +75,16 @@ const cardTitleStyles = {
 
 const CardComponent: React.FC<CardComponentProps> = ({ item, openModal }) => {
   return (
-    <CustomCard onClick={openModal} aria-label={`View ${item.title}`}>
-      <CustomCardMedia image={item.imageUrl} title={item.title} />
-      <CardContent>
-        <Typography variant="h5" component="div" sx={cardTitleStyles}>
-          {item.title}
-        </Typography>
-      </CardContent>
-    </CustomCard>
+    <div className="menu-card">
+      <CustomCard onClick={openModal} aria-label={`View ${item.title}`}>
+        <CustomCardMedia image={item.imageUrl} title={item.title} />
+        <CardContent>
+          <Typography variant="h5" component="div" sx={cardTitleStyles}>
+            {item.title}
+          </Typography>
+        </CardContent>
+      </CustomCard>
+    </div>
   );
 };
 

@@ -144,7 +144,7 @@ const Reservation: React.FC = () => {
             gutterBottom
             sx={{
               fontFamily: "Montserrat, sans-serif",
-              fontSize: { xs: "2.5rem", sm: "4rem" },
+              fontSize: { xs: "2.5rem", sm: "3.5rem" },
               lineHeight: "1.2",
               color: "#ffffff",
               textAlign: "center",
@@ -166,13 +166,14 @@ const Reservation: React.FC = () => {
             Review what you wish to include in your reservation, pick a date and
             enjoy your unforgettable evening with us.
           </Typography>
+
           <Grid container spacing={4} justifyContent="flex-start">
             <Grid item xs={12} md={6}>
               <Typography
                 variant="h3"
                 sx={{
                   fontFamily: "Montserrat, sans-serif",
-                  fontSize: "2rem",
+                  fontSize: "1.6rem",
                   color: "#ffffff",
                   textAlign: "center",
                   marginBottom: "20px",
@@ -180,31 +181,35 @@ const Reservation: React.FC = () => {
               >
                 YOUR RESERVATION'S ITEMS
               </Typography>
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: {
-                    xs: "repeat(1, 1fr)",
-                    sm: "repeat(2, 1fr)",
-                    md: "repeat(3, 1fr)",
-                  },
-                  gap: "20px",
-                  maxHeight: "70vh",
-                  overflowY: "auto",
-                }}
-              >
-                {reservations.map((item, index) => (
-                  <ReservationCard
-                    key={index}
-                    item={item}
-                    index={index}
-                    onDelete={handleDeleteItem}
-                  />
-                ))}
-              </Box>
+              <div className="reservation-page">
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: {
+                      xs: "repeat(1, 1fr)",
+                      sm: "repeat(2, 1fr)",
+                      md: "repeat(3, 1fr)",
+                    },
+                    gap: "20px",
+                    maxHeight: "70vh",
+                    overflowY: "auto",
+                  }}
+                >
+                  {reservations.map((item, index) => (
+                    <ReservationCard
+                      key={index}
+                      item={item}
+                      index={index}
+                      onDelete={handleDeleteItem}
+                    />
+                  ))}
+                </Box>
+              </div>
             </Grid>
             <Grid item xs={12} md={6}>
-              <ReservationForm />
+              <div className="reservation-page">
+                <ReservationForm />
+              </div>
             </Grid>
           </Grid>
         </Container>
