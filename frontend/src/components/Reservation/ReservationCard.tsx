@@ -143,6 +143,7 @@ const ReservationCard: React.FC<{
         onClose={() => handleClose(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        className="confirmation"
       >
         <DialogTitle id="alert-dialog-title">Remove Item?</DialogTitle>
         <DialogContent>
@@ -151,6 +152,7 @@ const ReservationCard: React.FC<{
             sx={{
               fontFamily: "Quicksand, sans-serif",
               fontSize: "1rem",
+              fontWeight: "bold",
               textAlign: "center",
             }}
           >

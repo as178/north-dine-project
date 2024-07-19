@@ -84,7 +84,7 @@ const Reservation: React.FC = () => {
   }, []);
 
   const gradientColors =
-    "linear-gradient(to top, rgba(6, 11, 60, 1), rgba(6, 11, 30, 0.9), rgba(6, 11, 56, 0.65))";
+    "linear-gradient(to top, rgba(2, 0, 10, 1), rgba(6, 11, 56, 0.75))";
 
   const handleDeleteItem = (index: number) => {
     setReservations((prevReservations) =>

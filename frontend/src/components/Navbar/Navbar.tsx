@@ -28,9 +28,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 const Navbar: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isMobileView, setIsMobileView] = useState<boolean>(false);
-  const [isHighContrast, setIsHighContrast] = useState<boolean>(false); // State for high contrast mode
+  const [isHighContrast, setIsHighContrast] = useState<boolean>(false);
+  const [iconHovered, setIconHovered] = useState<boolean>(false);
 
-  // Function to toggle high contrast mode
   const toggleHighContrast = () => {
     setIsHighContrast(!isHighContrast);
     document.documentElement.classList.toggle(
@@ -58,6 +58,10 @@ const Navbar: React.FC = () => {
 
   const handleDrawerItemClick = () => {
     setDrawerOpen(false);
+  };
+
+  const handleIconHover = (hovered: boolean) => {
+    setIconHovered(hovered);
   };
 
   return (
@@ -96,17 +100,28 @@ const Navbar: React.FC = () => {
           edge="end"
           color="inherit"
           aria-label="toggle theme"
+          onMouseEnter={() => handleIconHover(true)}
+          onMouseLeave={() => handleIconHover(false)}
           onClick={toggleHighContrast}
-          sx={{ position: "absolute", right: "80px" }} // Adjust position as needed
+          sx={{
+            position: "absolute",
+            right: "80px",
+          }}
         >
-          <Brightness3Icon color={isHighContrast ? "primary" : "inherit"} />
+          <Brightness3Icon
+            color={isHighContrast ? "primary" : "inherit"}
+            sx={{
+              transition: "filter 0.2s ease-in-out",
+              filter: iconHovered ? "drop-shadow(0px 0px 7px #ffffff)" : "none",
+            }}
+          />
         </IconButton>
 
         <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
           <DrawerMenu
             buttonStyles={buttonStyles}
             onClick={handleDrawerItemClick}
-            drawerWidth={200}
+            drawerWidth={230}
           />
         </Drawer>
       </StyledToolbar>

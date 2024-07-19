@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   Typography,
@@ -6,19 +6,19 @@ import {
   CardContent,
   Button,
   Box,
+  IconButton,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-
-interface Ingredient {
-  id: number;
-  name: string;
-}
+import CloseIcon from "@mui/icons-material/Close";
+import NotificationSnackbar from "./NotificationSnackbar"; // Import the new component
 
 interface ModalCardProps {
   item: {
     title: string;
     imageUrl: string;
     description: string;
-    ingredients: Ingredient[];
+    ingredients: string[];
     price: number;
   } | null;
   modalOpen: boolean;
@@ -30,6 +30,23 @@ const ModalCard: React.FC<ModalCardProps> = ({
   modalOpen,
   closeModal,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleAddToReservation = () => {
+    // Show pop-up
+    setOpenSnackbar(true);
+
+    // Close the modal
+    closeModal();
+
+    // Hide pop-up after 2 seconds
+    setTimeout(() => {
+      setOpenSnackbar(false);
+    }, 2000);
+  };
+
   const modalContentStyles = {
     position: "absolute" as const,
     top: "50%",
@@ -55,112 +72,130 @@ const ModalCard: React.FC<ModalCardProps> = ({
   if (!item) return null;
 
   return (
-    <Modal
-      open={modalOpen}
-      onClose={closeModal}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box sx={modalContentStyles} className="menu-card">
-        <Typography
-          variant="h3"
-          gutterBottom
-          sx={{
-            fontFamily: "Montserrat, sans-serif",
-            textTransform: "uppercase",
-            fontSize: "1.8rem",
-            color: "#1c1a40",
-            marginBottom: "20px",
-            fontWeight: "bold",
-          }}
-          className="menu-card-title"
-        >
-          {item.title}
-        </Typography>
-        <CardMedia
-          component="img"
-          height="auto"
-          image={item.imageUrl}
-          alt={item.title}
-          sx={cardMediaStyles}
-        />
-        <CardContent>
+    <>
+      <Modal open={modalOpen} onClose={closeModal}>
+        <Box sx={modalContentStyles}>
+          {isMobile && (
+            <IconButton
+              onClick={closeModal}
+              sx={{
+                position: "absolute",
+                top: "0px",
+                right: "0px",
+                color: "text.primary",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+              }}
+              aria-label="close"
+              className="modal-button"
+            >
+              <CloseIcon />
+            </IconButton>
+          )}
           <Typography
-            variant="body1"
-            sx={{
-              fontFamily: "Quicksand, sans-serif",
-              fontSize: "1rem",
-              lineHeight: "1.6",
-              color: "#1c1a40",
-              marginTop: "20px",
-            }}
-            className="menu-card-description"
-          >
-            {item.description}
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
+            variant="h3"
+            gutterBottom
+            className="modal-card-text"
+            style={{
               fontFamily: "Montserrat, sans-serif",
-              fontWeight: "bold",
               textTransform: "uppercase",
-              fontSize: "1rem",
-              color: "#1c1a40",
-              marginTop: "30px",
+              fontSize: "1.8rem",
+              marginBottom: "20px",
+              fontWeight: "bold",
             }}
-            className="menu-card-title"
           >
-            Ingredients
+            {item.title}
           </Typography>
-          <Box sx={{ marginTop: "10px" }}>
-            {item.ingredients.map((ingredient) => (
-              <Typography
-                key={ingredient.id}
-                variant="body1"
-                sx={{
-                  fontFamily: "Montserrat, sans-serif",
-                  textTransform: "uppercase",
-                  fontSize: "0.9rem",
-                  color: "#1c1a40",
-                }}
-                className="menu-card-description"
-              >
-                {ingredient.name}
-              </Typography>
-            ))}
-          </Box>
-          <Typography
-            variant="h6"
+          <CardMedia
+            component="img"
+            height="auto"
+            image={item.imageUrl}
+            alt={item.title}
+            sx={cardMediaStyles}
+          />
+          <CardContent>
+            <Typography
+              variant="body1"
+              className="modal-card-text"
+              style={{
+                fontFamily: "Quicksand, sans-serif",
+                fontSize: "1rem",
+                lineHeight: "1.6",
+                marginTop: "20px",
+                fontWeight: "bold",
+              }}
+            >
+              {item.description}
+            </Typography>
+            <Typography
+              variant="body1"
+              className="modal-card-text"
+              style={{
+                fontFamily: "Montserrat, sans-serif",
+                textTransform: "uppercase",
+                fontSize: "1rem",
+                marginTop: "30px",
+                fontWeight: "bold",
+              }}
+            >
+              Ingredients
+            </Typography>
+            <Box sx={{ marginTop: "10px" }}>
+              {item.ingredients.map((ingredient, index) => (
+                <Typography
+                  key={index}
+                  variant="body1"
+                  className="modal-card-text"
+                  style={{
+                    fontFamily: "Montserrat, sans-serif",
+                    textTransform: "uppercase",
+                    fontSize: "0.9rem",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {ingredient}
+                </Typography>
+              ))}
+            </Box>
+            <Typography
+              variant="h6"
+              className="modal-card-text"
+              style={{
+                fontFamily: "Montserrat, sans-serif",
+                textTransform: "uppercase",
+                fontSize: "1.1rem",
+                marginTop: "20px",
+                fontWeight: "bold",
+              }}
+            >
+              NZ${item.price.toFixed(2)}
+            </Typography>
+          </CardContent>
+          <Button
+            onClick={handleAddToReservation}
+            variant="contained"
             sx={{
-              fontFamily: "Montserrat, sans-serif",
               fontWeight: "bold",
-              textTransform: "uppercase",
-              fontSize: "1.1rem",
-              color: "#1c1a40",
               marginTop: "20px",
+              backgroundColor: "#1c1a40",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "#141229",
+              },
             }}
-            className="menu-card-title"
+            className="menu-card-button"
           >
-            NZ${item.price.toFixed(2)}
-          </Typography>
-        </CardContent>
-        <Button
-          onClick={closeModal}
-          variant="contained"
-          sx={{
-            marginTop: "20px",
-            backgroundColor: "#1c1a40",
-            color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "#141229",
-            },
-          }}
-          className="menu-card-button"
-        >
-          Add to Reservation
-        </Button>
-      </Box>
-    </Modal>
+            Add to Reservation
+          </Button>
+        </Box>
+      </Modal>
+
+      <NotificationSnackbar
+        open={openSnackbar}
+        onClose={() => setOpenSnackbar(false)}
+      />
+    </>
   );
 };
 

@@ -21,7 +21,10 @@ export const DrawerMenu: React.FC<DrawerMenuProps> = ({
   const buttonTextColor = "#060b38";
 
   return (
-    <div style={{ width: drawerWidth, padding: "20px 10px" }}>
+    <div
+      className="drawer-button"
+      style={{ width: drawerWidth, padding: "20px 10px" }}
+    >
       {menuItems.map((item, index) => (
         <Button
           key={index}

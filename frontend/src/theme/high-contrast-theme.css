@@ -19,6 +19,13 @@
 }
 
 
+/* Navbar Drawer*/
+.high-contrast-theme .drawer-button {
+  color: #000000;
+  filter: brightness(0%);
+}
+
+
 /* Reservation */
 .high-contrast-theme .reservation-page * {
   color: #000000; 
@@ -27,6 +34,10 @@
 
 .high-contrast-theme .reservation-page button {
   color: #ffffff; 
+}
+
+.high-contrast-theme .confirmation * {
+  color: #000000; 
 }
 
 
@@ -46,4 +57,13 @@
 
 .high-contrast-theme .menu-card-button {
   color: #ffffff; 
+}
+
+.modal-card-text {
+  color: #311e5f;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5); 
+}
+
+.high-contrast-theme .modal-button {
+  filter: brightness(0%);
 }

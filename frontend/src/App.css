@@ -6,11 +6,13 @@ body {
   color: #060b38;
 }
 
+
+
 .quicksand-font {
   font-family: 'Quicksand', sans-serif;
 }
 
-/*Scrollbar*/
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 2px; 
   background-color: #0e0d0d; 
