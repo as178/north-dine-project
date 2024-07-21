@@ -16,6 +16,6 @@ namespace NorthDineRestaurant.Models
         public required string UserName { get; set; } // Required
 
         // Computed property
-        public required string UserInitial { get; set; }
+        public string? UserInitial { get; private set; } // Read-only, will be set by SQL computation
     }
 }

@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "7/yvsnDRTixX0vVer35KSjS1HzfM4rGxA/gc1emwSdw=",
+  "Hash": "8NG13nV/lTbCizrGq9uWkPRo4xhQ5fKqAkLfFSvxnXE=",
   "Source": "backend",
   "BasePath": "_content/backend",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "backend\\wwwroot",
+      "Source": "backend",
+      "ContentRoot": "C:\\my folderz\\school stuff\\MSA\\.MSA Phase 2 Project Stuff\\north-dine-project\\backend\\wwwroot\\",
+      "BasePath": "_content/backend",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\my folderz\\school stuff\\MSA\\.MSA Phase 2 Project Stuff\\north-dine-project\\backend\\wwwroot\\images\\31c4f667-e92e-4c43-a256-3e483af00266_trufflepizza.png",
+      "SourceId": "backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\my folderz\\school stuff\\MSA\\.MSA Phase 2 Project Stuff\\north-dine-project\\backend\\wwwroot\\",
+      "BasePath": "_content/backend",
+      "RelativePath": "images/31c4f667-e92e-4c43-a256-3e483af00266_trufflepizza.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\31c4f667-e92e-4c43-a256-3e483af00266_trufflepizza.png"
+    }
+  ]
 }

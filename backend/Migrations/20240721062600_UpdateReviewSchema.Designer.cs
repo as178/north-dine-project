@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NorthDineRestaurant.Data;
 
@@ -10,9 +11,11 @@ using NorthDineRestaurant.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(ReviewContext))]
-    partial class ReviewContextModelSnapshot : ModelSnapshot
+    [Migration("20240721062600_UpdateReviewSchema")]
+    partial class UpdateReviewSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +41,7 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserInitial")
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("nvarchar(max)")
                         .HasComputedColumnSql("UPPER(SUBSTRING(UserName, 1, 1))", true);

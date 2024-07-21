@@ -17,7 +17,7 @@ namespace NorthDineRestaurant.Models
         public int Quantity { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(4,2)")]  // Precision of 4 total digits, with 2 decimal places
+        [Column(TypeName = "decimal(4,2)")]
         public decimal TotalPrice { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NorthDineRestaurant.Data;
 
@@ -10,9 +11,11 @@ using NorthDineRestaurant.Data;
 namespace backend.Migrations.FoodItem
 {
     [DbContext(typeof(FoodItemContext))]
-    partial class FoodItemContextModelSnapshot : ModelSnapshot
+    [Migration("20240721133406_UpdateFoodItemConfiguration")]
+    partial class UpdateFoodItemConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

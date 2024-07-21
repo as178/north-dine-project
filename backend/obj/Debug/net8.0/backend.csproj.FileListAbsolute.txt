@@ -137,3 +137,4 @@ C:\my folderz\school stuff\MSA\.MSA Phase 2 Project Stuff\north-dine-project\bac
 C:\my folderz\school stuff\MSA\.MSA Phase 2 Project Stuff\north-dine-project\backend\obj\Debug\net8.0\backend.pdb
 C:\my folderz\school stuff\MSA\.MSA Phase 2 Project Stuff\north-dine-project\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 C:\my folderz\school stuff\MSA\.MSA Phase 2 Project Stuff\north-dine-project\backend\obj\Debug\net8.0\ref\backend.dll
+C:\my folderz\school stuff\MSA\.MSA Phase 2 Project Stuff\north-dine-project\backend\bin\Debug\net8.0\backend.staticwebassets.runtime.json
