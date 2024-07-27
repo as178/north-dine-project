@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using NorthDineRestaurant.Data;
 using NorthDineRestaurant.Repositories;
+using Microsoft.OpenApi.Models;
+using System;
+using Microsoft.OpenApi.Any;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,14 +32,31 @@ builder.Services.AddCors(options =>
     {
         policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
             .AllowAnyHeader()
-            .AllowAnyMethod() // Allow all methods (GET, POST, etc.)
+            .AllowAnyMethod()
             .AllowAnyOrigin(); // For localhost only. Allow all
     });
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "NorthDineRestaurant API", Version = "v1" });
+
+    c.MapType<DateTime>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Format = "date",
+        Example = new OpenApiString("dd/MM/yyyy")
+    });
+
+    c.MapType<TimeSpan>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Format = "time",
+        Example = new OpenApiString("hh:mm tt")
+    });
+});
 
 var app = builder.Build();
 

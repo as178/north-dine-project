@@ -7,11 +7,11 @@ namespace NorthDineRestaurant.Models
     {
         [Required]
         public int ReservationId { get; set; }
-        public required Reservation Reservation { get; set; }
+        public Reservation Reservation { get; set; } = null!;
 
         [Required]
         public int FoodItemId { get; set; }
-        public required FoodItem FoodItem { get; set; }
+        public FoodItem FoodItem { get; set; } = null!;
 
         [Required]
         public int Quantity { get; set; }

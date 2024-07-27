@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NorthDineRestaurant.Data;
 
@@ -11,9 +12,11 @@ using NorthDineRestaurant.Data;
 namespace backend.Migrations.Reservation
 {
     [DbContext(typeof(ReservationContext))]
-    partial class ReservationContextModelSnapshot : ModelSnapshot
+    [Migration("20240726114210_ReservationUpdates")]
+    partial class ReservationUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +61,7 @@ namespace backend.Migrations.Reservation
 
                     b.HasKey("Id");
 
-                    b.ToTable("FoodItem");
+                    b.ToTable("FoodItems");
                 });
 
             modelBuilder.Entity("NorthDineRestaurant.Models.Reservation", b =>
@@ -146,7 +149,7 @@ namespace backend.Migrations.Reservation
                     b.HasOne("NorthDineRestaurant.Models.FoodItem", "FoodItem")
                         .WithMany()
                         .HasForeignKey("FoodItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("NorthDineRestaurant.Models.Reservation", "Reservation")

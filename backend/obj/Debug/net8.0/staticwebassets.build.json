@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8NG13nV/lTbCizrGq9uWkPRo4xhQ5fKqAkLfFSvxnXE=",
+  "Hash": "QcYWWjOAkW1rSpM7D8pn0gHnAxJFyQ59OiiYqMrf2QI=",
   "Source": "backend",
   "BasePath": "_content/backend",
   "Mode": "Default",
@@ -34,6 +34,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\31c4f667-e92e-4c43-a256-3e483af00266_trufflepizza.png"
+    },
+    {
+      "Identity": "C:\\my folderz\\school stuff\\MSA\\.MSA Phase 2 Project Stuff\\north-dine-project\\backend\\wwwroot\\images\\3c2c1d45-2d6e-4a5a-bd03-92ae424f9d9a_moscowmule.jpeg",
+      "SourceId": "backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\my folderz\\school stuff\\MSA\\.MSA Phase 2 Project Stuff\\north-dine-project\\backend\\wwwroot\\",
+      "BasePath": "_content/backend",
+      "RelativePath": "images/3c2c1d45-2d6e-4a5a-bd03-92ae424f9d9a_moscowmule.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\3c2c1d45-2d6e-4a5a-bd03-92ae424f9d9a_moscowmule.jpeg"
     }
   ]
 }
