@@ -15,12 +15,14 @@ namespace NorthDineRestaurant.Controllers
     [ApiController]
     public class FoodItemController : ControllerBase
     {
-        private readonly FoodItemContext _context;
+        private readonly FoodItemContext _foodItemContext;
+        private readonly ReservationContext _reservationContext;
         private readonly string _imageFolderPath;
 
-        public FoodItemController(FoodItemContext context, IWebHostEnvironment env)
+        public FoodItemController(FoodItemContext foodItemContext, ReservationContext reservationContext, IWebHostEnvironment env)
         {
-            _context = context;
+            _foodItemContext = foodItemContext;
+            _reservationContext = reservationContext;
             _imageFolderPath = Path.Combine(env.WebRootPath, "images");
 
             // Ensure the image folder exists
@@ -34,14 +36,14 @@ namespace NorthDineRestaurant.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FoodItem>>> GetFoodItems()
         {
-            return await _context.FoodItems.ToListAsync();
+            return await _foodItemContext.FoodItems.ToListAsync();
         }
 
         // GET: api/FoodItem/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FoodItem>> GetFoodItem(int id)
         {
-            var foodItem = await _context.FoodItems.FindAsync(id);
+            var foodItem = await _foodItemContext.FoodItems.FindAsync(id);
 
             if (foodItem == null)
             {
@@ -80,8 +82,24 @@ namespace NorthDineRestaurant.Controllers
                 Category = dto.Category
             };
 
-            _context.FoodItems.Add(foodItem);
-            await _context.SaveChangesAsync();
+            // Save to FoodItemDB
+            _foodItemContext.FoodItems.Add(foodItem);
+            await _foodItemContext.SaveChangesAsync();
+
+            // Save to ReservationDB
+            var reservationFoodItem = new FoodItem
+            {
+                // Do not set Id; let the database handle it
+                Title = foodItem.Title,
+                ShortDescription = foodItem.ShortDescription,
+                Ingredients = foodItem.Ingredients,
+                Price = foodItem.Price,
+                ImageUrl = foodItem.ImageUrl,
+                Category = foodItem.Category
+            };
+
+            _reservationContext.FoodItem.Add(reservationFoodItem);
+            await _reservationContext.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetFoodItem), new { id = foodItem.Id }, foodItem);
         }
@@ -95,7 +113,7 @@ namespace NorthDineRestaurant.Controllers
                 return BadRequest();
             }
 
-            var foodItem = await _context.FoodItems.FindAsync(id);
+            var foodItem = await _foodItemContext.FoodItems.FindAsync(id);
             if (foodItem == null)
             {
                 return NotFound();
@@ -131,8 +149,23 @@ namespace NorthDineRestaurant.Controllers
             foodItem.Price = dto.Price;
             foodItem.Category = dto.Category;
 
-            _context.Entry(foodItem).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _foodItemContext.Entry(foodItem).State = EntityState.Modified;
+            await _foodItemContext.SaveChangesAsync();
+
+            // Update Reservation Database as well
+            var reservationFoodItem = await _reservationContext.FoodItem.FindAsync(id);
+            if (reservationFoodItem != null)
+            {
+                reservationFoodItem.Title = foodItem.Title;
+                reservationFoodItem.ShortDescription = foodItem.ShortDescription;
+                reservationFoodItem.Ingredients = foodItem.Ingredients;
+                reservationFoodItem.Price = foodItem.Price;
+                reservationFoodItem.ImageUrl = foodItem.ImageUrl;
+                reservationFoodItem.Category = foodItem.Category;
+
+                _reservationContext.Entry(reservationFoodItem).State = EntityState.Modified;
+                await _reservationContext.SaveChangesAsync();
+            }
 
             return NoContent();
         }
@@ -141,7 +174,7 @@ namespace NorthDineRestaurant.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFoodItem(int id)
         {
-            var foodItem = await _context.FoodItems.FindAsync(id);
+            var foodItem = await _foodItemContext.FoodItems.FindAsync(id);
             if (foodItem == null)
             {
                 return NotFound();
@@ -157,8 +190,16 @@ namespace NorthDineRestaurant.Controllers
                 }
             }
 
-            _context.FoodItems.Remove(foodItem);
-            await _context.SaveChangesAsync();
+            _foodItemContext.FoodItems.Remove(foodItem);
+            await _foodItemContext.SaveChangesAsync();
+
+            // Also remove from Reservation Database
+            var reservationFoodItem = await _reservationContext.FoodItem.FindAsync(id);
+            if (reservationFoodItem != null)
+            {
+                _reservationContext.FoodItem.Remove(reservationFoodItem);
+                await _reservationContext.SaveChangesAsync();
+            }
 
             return NoContent();
         }

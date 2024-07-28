@@ -8,11 +8,14 @@ import {
   Avatar,
 } from "@mui/material";
 
-const CardReview: React.FC<{
+interface CardReviewProps {
   title: string;
   body: string;
   user: { name: string; initial: string };
-}> = ({ title, body, user }) => {
+  sx?: object;
+}
+
+const CardReview: React.FC<CardReviewProps> = ({ title, body, user, sx }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -31,9 +34,10 @@ const CardReview: React.FC<{
       boxShadow:
         "0 8px 16px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.9)",
     },
-    width: "100%",
+    width: "300px",
     maxWidth: "300px",
     color: "#ffffff",
+    ...sx,
   };
 
   return (

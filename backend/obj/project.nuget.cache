@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "8jlcFSKg5P8hj6RQoOpo1lzGJ8N0LQaDyXHPsKkYNKUBx9THEKVTF1UfFgCUruiU4RvrPI9QTd69Y0nuVJl2Nw==",
+  "dgSpecHash": "qmr3Q0UEs6KonJpZ4xX6fwyaJzfUmAr1q5m4UlLCj9ASmK9FI0iGXFX/ETuKYJ/Gwls5SXMkiN795bLDXeV2vg==",
   "success": true,
   "projectFilePath": "C:\\my folderz\\school stuff\\MSA\\.MSA Phase 2 Project Stuff\\north-dine-project\\backend\\backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\shado\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\shado\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\shado\\.nuget\\packages\\dotenv.net\\3.2.0\\dotenv.net.3.2.0.nupkg.sha512",
     "C:\\Users\\shado\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\shado\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\shado\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",

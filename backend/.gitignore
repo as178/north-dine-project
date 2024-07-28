@@ -1,0 +1,19 @@
+# Ignore appsettings files with sensitive data
+appsettings.Development.json
+appsettings.Production.json
+appsettings.*.json
+secrets.json
+
+# Ignore local user-specific files
+*.csproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore other sensitive files or folders
+.env

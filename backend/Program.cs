@@ -2,20 +2,26 @@ using Microsoft.EntityFrameworkCore;
 using NorthDineRestaurant.Data;
 using NorthDineRestaurant.Repositories;
 using Microsoft.OpenApi.Models;
-using System;
+using dotenv.net;
 using Microsoft.OpenApi.Any;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load environment variables from .env file
+DotEnv.Load();
+
 // Configure DbContext
 builder.Services.AddDbContext<ReviewContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ReviewDatabase") ?? throw new InvalidOperationException("Connection string 'ReviewDatabase' not found.")));
+    options.UseSqlServer(Environment.GetEnvironmentVariable("REVIEW_DATABASE_CONNECTION_STRING")
+                         ?? throw new InvalidOperationException("Connection string 'ReviewDatabase' not found.")));
 
 builder.Services.AddDbContext<FoodItemContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("FoodItemDatabase") ?? throw new InvalidOperationException("Connection string 'FoodItemDatabase' not found.")));
+    options.UseSqlServer(Environment.GetEnvironmentVariable("FOOD_ITEM_DATABASE_CONNECTION_STRING")
+                         ?? throw new InvalidOperationException("Connection string 'FoodItemDatabase' not found.")));
 
 builder.Services.AddDbContext<ReservationContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ReservationDatabase") ?? throw new InvalidOperationException("Connection string 'ReservationDatabase' not found.")));
+    options.UseSqlServer(Environment.GetEnvironmentVariable("RESERVATION_DATABASE_CONNECTION_STRING")
+                         ?? throw new InvalidOperationException("Connection string 'ReservationDatabase' not found.")));
 
 // Register repositories
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
@@ -41,7 +47,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "NorthDineRestaurant API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "NorthDineAPI", Version = "v1" });
 
     c.MapType<DateTime>(() => new OpenApiSchema
     {

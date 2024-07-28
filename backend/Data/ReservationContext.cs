@@ -7,6 +7,7 @@ namespace NorthDineRestaurant.Data
     {
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ReservationFoodItem> ReservationFoodItems { get; set; }
+        public DbSet<FoodItem> FoodItem { get; set; }  // Table name is FoodItem
 
         public ReservationContext(DbContextOptions<ReservationContext> options)
             : base(options)
@@ -26,18 +27,17 @@ namespace NorthDineRestaurant.Data
                 .HasMany(r => r.ReservationFoodItems)
                 .WithOne(rf => rf.Reservation)
                 .HasForeignKey(rf => rf.ReservationId)
-                .OnDelete(DeleteBehavior.Cascade); // Or set to NoAction if no delete behavior is desired
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ReservationFoodItem>()
                 .HasOne(rf => rf.FoodItem)
-                .WithMany() // No navigation property on FoodItem
+                .WithMany()
                 .HasForeignKey(rf => rf.FoodItemId)
-                .OnDelete(DeleteBehavior.Restrict); // Adjust based on desired behavior
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure property types
-            modelBuilder.Entity<ReservationFoodItem>()
-                .Property(rf => rf.TotalPrice)
-                .HasColumnType("decimal(4,2)");
+            // Ensure FoodItem entity is mapped to FoodItem table
+            modelBuilder.Entity<FoodItem>()
+                .ToTable("FoodItem");
         }
     }
 }

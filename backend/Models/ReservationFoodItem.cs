@@ -17,7 +17,7 @@ namespace NorthDineRestaurant.Models
         public int Quantity { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(4,2)")]
+        [Column(TypeName = "decimal(8,2)")]
         public decimal TotalPrice { get; set; }
     }
 }

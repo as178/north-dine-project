@@ -13,10 +13,12 @@ namespace NorthDineRestaurant.Controllers
     public class ReservationController : ControllerBase
     {
         private readonly ReservationContext _context;
+        private readonly DbSet<FoodItem> _foodItemSet;
 
         public ReservationController(ReservationContext context)
         {
             _context = context;
+            _foodItemSet = context.Set<FoodItem>();
         }
 
         // GET: api/Reservation
@@ -54,6 +56,22 @@ namespace NorthDineRestaurant.Controllers
         {
             var reservation = ToEntity(reservationDto);
 
+            // Fetch the food items and calculate TotalPrice
+            var foodItemIds = reservation.ReservationFoodItems.Select(rfi => rfi.FoodItemId).Distinct().ToList();
+            var foodItems = await _foodItemSet
+                .Where(fi => foodItemIds.Contains(fi.Id))
+                .ToListAsync();
+
+            var foodItemLookup = foodItems.ToDictionary(fi => fi.Id);
+
+            foreach (var rfi in reservation.ReservationFoodItems)
+            {
+                if (foodItemLookup.TryGetValue(rfi.FoodItemId, out var foodItem))
+                {
+                    rfi.TotalPrice = rfi.Quantity * foodItem.Price;
+                }
+            }
+
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
 
@@ -79,6 +97,22 @@ namespace NorthDineRestaurant.Controllers
             }
 
             UpdateEntity(reservation, reservationDto);
+
+            // Fetch the food items and calculate TotalPrice
+            var foodItemIds = reservation.ReservationFoodItems.Select(rfi => rfi.FoodItemId).Distinct().ToList();
+            var foodItems = await _foodItemSet
+                .Where(fi => foodItemIds.Contains(fi.Id))
+                .ToListAsync();
+
+            var foodItemLookup = foodItems.ToDictionary(fi => fi.Id);
+
+            foreach (var rfi in reservation.ReservationFoodItems)
+            {
+                if (foodItemLookup.TryGetValue(rfi.FoodItemId, out var foodItem))
+                {
+                    rfi.TotalPrice = rfi.Quantity * foodItem.Price;
+                }
+            }
 
             _context.Entry(reservation).State = EntityState.Modified;
 
@@ -145,8 +179,7 @@ namespace NorthDineRestaurant.Controllers
                 {
                     FoodItemId = rfi.FoodItemId,
                     Quantity = rfi.Quantity,
-                    // TotalPrice is hidden from Swagger
-                    // TotalPrice = rfi.TotalPrice
+                    TotalPrice = rfi.TotalPrice  // Expose TotalPrice for read operations
                 }).ToList()
             };
         }
@@ -219,10 +252,7 @@ namespace NorthDineRestaurant.Controllers
     {
         public int FoodItemId { get; set; }
         public int Quantity { get; set; }
-
-        // Hidden from Swagger
-        [System.Text.Json.Serialization.JsonIgnore]
-        public decimal TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; } // Included for read operations
     }
 
     public class ReservationDto
@@ -235,7 +265,7 @@ namespace NorthDineRestaurant.Controllers
         public int NumberOfPeople { get; set; }
         public DateTime ReservationDate { get; set; }
         public TimeSpan ReservationTime { get; set; }
-        public List<ReservationFoodItemDto> ReservationFoodItems { get; set; } = new List<ReservationFoodItemDto>();
+        public required List<ReservationFoodItemDto> ReservationFoodItems { get; set; }
         public bool? RomanticSetup { get; set; }
         public bool? Birthday { get; set; }
         public bool? Anniversary { get; set; }
