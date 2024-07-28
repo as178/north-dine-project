@@ -36,6 +36,7 @@ const CardReview: React.FC<CardReviewProps> = ({ title, body, user, sx }) => {
     },
     width: "300px",
     maxWidth: "300px",
+    maxHeight: "240px",
     color: "#ffffff",
     ...sx,
   };

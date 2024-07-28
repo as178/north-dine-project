@@ -11,13 +11,14 @@ import {
   useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import NotificationSnackbar from "./NotificationSnackbar"; // Import the new component
+import NotificationSnackbar from "./NotificationSnackbar";
+import { API_BASE_URL } from "../../config/config";
 
 interface ModalCardProps {
   item: {
     title: string;
     imageUrl: string;
-    description: string;
+    shortDescription: string;
     ingredients: string[];
     price: number;
   } | null;
@@ -35,13 +36,10 @@ const ModalCard: React.FC<ModalCardProps> = ({
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleAddToReservation = () => {
-    // Show pop-up
     setOpenSnackbar(true);
 
-    // Close the modal
     closeModal();
 
-    // Hide pop-up after 2 seconds
     setTimeout(() => {
       setOpenSnackbar(false);
     }, 2000);
@@ -110,7 +108,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
           <CardMedia
             component="img"
             height="auto"
-            image={item.imageUrl}
+            image={`${API_BASE_URL}${item.imageUrl}`}
             alt={item.title}
             sx={cardMediaStyles}
           />
@@ -126,7 +124,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
                 fontWeight: "bold",
               }}
             >
-              {item.description}
+              {item.shortDescription}
             </Typography>
             <Typography
               variant="body1"

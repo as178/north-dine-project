@@ -6,6 +6,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { API_BASE_URL } from "../../config/config";
 
 interface CardComponentProps {
   item: {
@@ -74,10 +75,12 @@ const cardTitleStyles = {
 };
 
 const CardComponent: React.FC<CardComponentProps> = ({ item, openModal }) => {
+  const imageUrl = `${API_BASE_URL}${item.imageUrl}`;
+
   return (
     <div className="menu-card">
       <CustomCard onClick={openModal} aria-label={`View ${item.title}`}>
-        <CustomCardMedia image={item.imageUrl} title={item.title} />
+        <CustomCardMedia image={imageUrl} title={item.title} />
         <CardContent>
           <Typography variant="h5" component="div" sx={cardTitleStyles}>
             {item.title}

@@ -11,7 +11,7 @@ import MenuButton, { homeButtonStyle } from "./MenuButton";
 import BackgroundImage from "./BackgroundImage";
 import GradientOverlay from "./GradientOverlay";
 import CardImage from "./CardImage";
-import ReviewCard from "./CardReview";
+import CardReviewContainer from "../../containers/CardReviewContainer";
 
 const Home: React.FC = () => {
   const [animate, setAnimate] = useState(false);
@@ -91,33 +91,6 @@ const Home: React.FC = () => {
     lineHeight: "1.8",
     maxWidth: "100%",
   };
-
-  const reviews = [
-    {
-      title: "Loved it!",
-      body: "A wonderful place for a family dinner. The service was impeccable.",
-      user: {
-        name: "John",
-        initial: "J",
-      },
-    },
-    {
-      title: "Fantastic Service!",
-      body: "The staff were friendly and attentive. I will definitely be back!",
-      user: {
-        name: "Emma",
-        initial: "E",
-      },
-    },
-    {
-      title: "Delicious Food!",
-      body: "Every dish we tried was amazing. The flavors were on point.",
-      user: {
-        name: "Michael",
-        initial: "M",
-      },
-    },
-  ];
 
   return (
     <>
@@ -266,35 +239,7 @@ const Home: React.FC = () => {
                 OUR CUSTOMERS' COMMENTARY
               </Typography>
             </Box>
-            <Grid
-              container
-              spacing={2}
-              alignItems="center"
-              justifyContent="center"
-            >
-              {reviews.map((review, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  key={index}
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <ReviewCard
-                    title={review.title}
-                    body={review.body}
-                    user={review.user}
-                    sx={{
-                      maxWidth: { xs: "90%", sm: "100%" },
-                      margin: "0 auto",
-                      padding: { xs: "16px", sm: "24px" },
-                      fontSize: { xs: "0.875rem", sm: "1rem" },
-                    }}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <CardReviewContainer />
           </Container>
         </Box>
       </BackgroundImage>
