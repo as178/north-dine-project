@@ -1,79 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Grid, Box } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import ReservationCard from "./ReservationCard";
 import ReservationForm from "./ReservationForm";
+import ModalCardContainer from "../../containers/ModalCardContainer";
+import { ReservationItem } from "./ReservationCard";
 
-interface ReservationItem {
-  title: string;
-  quantity: number;
-  totalPrice: number;
-  imageUrl: string;
+interface ReservationProps {
+  reservations: ReservationItem[] | undefined; // Adjusted type to include undefined
+  onAddFoodItem: (
+    reservationId: number,
+    foodItem: { foodItemId: number; quantity: number; totalPrice: number }
+  ) => Promise<void>;
+  onUpdateQuantity: (
+    reservationId: number,
+    foodItemId: number,
+    quantity: number
+  ) => Promise<void>;
 }
 
-const Reservation: React.FC = () => {
+const Reservation: React.FC<ReservationProps> = ({
+  reservations = [], // Default to an empty array if undefined
+  onAddFoodItem,
+  onUpdateQuantity,
+}) => {
   const [fadeIn, setFadeIn] = useState(false);
-  const [reservations, setReservations] = useState<ReservationItem[]>([
-    {
-      title: "Truffle Pizza",
-      quantity: 1,
-      totalPrice: 45.0,
-      imageUrl: "/images/trufflepizza.png",
-    },
-    {
-      title: "Lobster Thermidor",
-      quantity: 1,
-      totalPrice: 70.0,
-      imageUrl: "/images/lobsterthermidor.png",
-    },
-    {
-      title: "Seafood Risotto",
-      quantity: 1,
-      totalPrice: 55.0,
-      imageUrl: "/images/seafoodrisotto.png",
-    },
-    {
-      title: "Grilled Chicken Caesar Salad",
-      quantity: 1,
-      totalPrice: 25.0,
-      imageUrl: "/images/grilledchickensalad.jpeg",
-    },
-    {
-      title: "Filet Mignon",
-      quantity: 1,
-      totalPrice: 80.0,
-      imageUrl: "/images/filetmignon.jpeg",
-    },
-    {
-      title: "Beef Wellington",
-      quantity: 1,
-      totalPrice: 90.0,
-      imageUrl: "/images/beefwellington.jpeg",
-    },
-    {
-      title: "Moscow Mule",
-      quantity: 1,
-      totalPrice: 18.0,
-      imageUrl: "/images/moscowmule.jpeg",
-    },
-    {
-      title: "Negroni",
-      quantity: 1,
-      totalPrice: 20.0,
-      imageUrl: "/images/negroni.jpeg",
-    },
-    {
-      title: "French 75",
-      quantity: 1,
-      totalPrice: 22.0,
-      imageUrl: "/images/french75.jpeg",
-    },
-    {
-      title: "Martini",
-      quantity: 1,
-      totalPrice: 20.0,
-      imageUrl: "/images/martini.jpeg",
-    },
-  ]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -83,13 +35,40 @@ const Reservation: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const gradientColors =
-    "linear-gradient(to top, rgba(2, 0, 10, 1), rgba(6, 11, 56, 0.75))";
+  const handleAddFoodItem = async (item: ReservationItem) => {
+    if (item.id && selectedItemId) {
+      await onAddFoodItem(Number(selectedItemId), {
+        foodItemId: parseInt(item.id),
+        quantity: item.quantity,
+        totalPrice: item.totalPrice,
+      });
+      closeModal();
+    }
+  };
 
-  const handleDeleteItem = (index: number) => {
-    setReservations((prevReservations) =>
-      prevReservations.filter((_, i) => i !== index)
-    );
+  const handleQuantityChange = async (index: number, newQuantity: number) => {
+    const item = reservations[index];
+    if (item.id && newQuantity >= 0) {
+      await onUpdateQuantity(Number(item.id), parseInt(item.id), newQuantity);
+    }
+  };
+
+  const handleDeleteItem = (_index: number) => {
+    // Handle item removal logic
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedItemId(null);
+  };
+
+  // Hardcoded ReservationItem
+  const hardcodedItem: ReservationItem = {
+    id: "1",
+    quantity: 2,
+    totalPrice: 20.0,
+    title: "",
+    imageUrl: "",
   };
 
   return (
@@ -121,7 +100,8 @@ const Reservation: React.FC = () => {
           right: 0,
           bottom: 0,
           zIndex: -1,
-          backgroundImage: gradientColors,
+          backgroundImage:
+            "linear-gradient(to top, rgba(2, 0, 10, 1), rgba(6, 11, 56, 0.75))",
           opacity: 0.9,
         }}
       />
@@ -190,30 +170,59 @@ const Reservation: React.FC = () => {
                       sm: "repeat(2, 1fr)",
                       md: "repeat(3, 1fr)",
                     },
-                    gap: "20px",
-                    maxHeight: "70vh",
-                    overflowY: "auto",
+                    gap: 2,
                   }}
                 >
-                  {reservations.map((item, index) => (
-                    <ReservationCard
-                      key={index}
-                      item={item}
-                      index={index}
-                      onDelete={handleDeleteItem}
-                    />
-                  ))}
+                  {/* Render the hardcoded card */}
+                  <ReservationCard
+                    key={hardcodedItem.id}
+                    item={hardcodedItem}
+                    index={0}
+                    onDelete={handleDeleteItem}
+                    onQuantityChange={handleQuantityChange}
+                    openModal={() => {
+                      setModalOpen(true);
+                      setSelectedItemId(hardcodedItem.id);
+                    }}
+                  />
+                  {/* Render the dynamic cards if there are reservations */}
+                  {reservations.length > 0 ? (
+                    reservations.map((item, index) => (
+                      <ReservationCard
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        onDelete={handleDeleteItem}
+                        onQuantityChange={handleQuantityChange}
+                        openModal={() => {
+                          setModalOpen(true);
+                          setSelectedItemId(item.id);
+                        }}
+                      />
+                    ))
+                  ) : (
+                    <Typography>No reservations available.</Typography>
+                  )}
                 </Box>
               </div>
             </Grid>
             <Grid item xs={12} md={6}>
-              <div className="reservation-page">
-                <ReservationForm />
-              </div>
+              <ReservationForm
+                onAddFoodItem={handleAddFoodItem}
+                onUpdateQuantity={handleQuantityChange}
+              />
             </Grid>
           </Grid>
         </Container>
       </Box>
+      {modalOpen && (
+        <ModalCardContainer
+          modalOpen={modalOpen}
+          closeModal={closeModal}
+          itemId={selectedItemId || ""}
+          onAddFoodItem={handleAddFoodItem}
+        />
+      )}
     </Box>
   );
 };

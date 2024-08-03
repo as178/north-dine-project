@@ -78,6 +78,37 @@ namespace NorthDineRestaurant.Controllers
             return CreatedAtAction(nameof(GetReservation), new { id = reservation.Id }, ToDto(reservation));
         }
 
+        // POST: api/Reservation/1/addFoodItem
+        [HttpPost("{id}/addFoodItem")]
+        public async Task<IActionResult> AddFoodItem(int id, [FromBody] ReservationFoodItemDto foodItemDto)
+        {
+            var reservation = await _context.Reservations
+                .Include(r => r.ReservationFoodItems)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            var foodItem = await _foodItemSet.FindAsync(foodItemDto.FoodItemId);
+            if (foodItem == null)
+            {
+                return BadRequest("Food item not found.");
+            }
+
+            reservation.ReservationFoodItems.Add(new ReservationFoodItem
+            {
+                FoodItemId = foodItemDto.FoodItemId,
+                Quantity = foodItemDto.Quantity,
+                TotalPrice = foodItemDto.Quantity * foodItem.Price // Calculate total price
+            });
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         // PUT: api/Reservation/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReservation(int id, ReservationDto reservationDto)
@@ -262,10 +293,9 @@ namespace NorthDineRestaurant.Controllers
         public required string LastName { get; set; }
         public required string Email { get; set; }
         public required string PhoneNumber { get; set; }
-        public int NumberOfPeople { get; set; }
-        public DateTime ReservationDate { get; set; }
-        public TimeSpan ReservationTime { get; set; }
-        public required List<ReservationFoodItemDto> ReservationFoodItems { get; set; }
+        public required int NumberOfPeople { get; set; }
+        public required DateTime ReservationDate { get; set; }
+        public required TimeSpan ReservationTime { get; set; }
         public bool? RomanticSetup { get; set; }
         public bool? Birthday { get; set; }
         public bool? Anniversary { get; set; }
@@ -273,5 +303,6 @@ namespace NorthDineRestaurant.Controllers
         public bool? WheelchairAccess { get; set; }
         public bool? AllergyAccommodations { get; set; }
         public string? SpecialNotes { get; set; }
+        public List<ReservationFoodItemDto> ReservationFoodItems { get; set; } = new List<ReservationFoodItemDto>();
     }
 }

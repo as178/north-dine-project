@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Menu from "./components/Menu/Menu";
 import Navbar from "./components/Navbar/Navbar";
-import Reservation from "./components/Reservation/Reservation";
+import ReservationContainer from "./containers/ReservationContainer";
 import "./theme/high-contrast-theme.css";
 
 function App() {
@@ -14,7 +14,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="menu" element={<Menu />} />
-          <Route path="reservation" element={<Reservation />} />
+          <Route path="reservation" element={<ReservationContainer />} />{" "}
+          {/* Use ReservationContainer */}
         </Routes>
       </div>
     </>

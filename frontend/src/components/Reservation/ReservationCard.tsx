@@ -14,28 +14,43 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-interface ReservationItem {
+export interface ReservationItem {
+  id: string; // Updated to be a string (or adjust as needed)
   title: string;
   quantity: number;
   totalPrice: number;
   imageUrl: string;
 }
 
-const ReservationCard: React.FC<{
+interface ReservationCardProps {
   item: ReservationItem;
   index: number;
   onDelete: (index: number) => void;
-}> = ({ item, index, onDelete }) => {
+  onQuantityChange: (index: number, newQuantity: number) => void;
+  openModal: () => void;
+}
+
+const ReservationCard: React.FC<ReservationCardProps> = ({
+  item,
+  index,
+  onDelete,
+  onQuantityChange,
+  openModal,
+}) => {
   const [quantity, setQuantity] = useState(item.quantity);
   const [open, setOpen] = useState(false);
 
   const handleIncrement = () => {
-    setQuantity(quantity + 1);
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+    onQuantityChange(index, newQuantity);
   };
 
   const handleDecrement = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      const newQuantity = quantity - 1;
+      setQuantity(newQuantity);
+      onQuantityChange(index, newQuantity);
     } else {
       setOpen(true);
     }
@@ -96,46 +111,36 @@ const ReservationCard: React.FC<{
             {item.title}
           </Typography>
           <Typography
-            variant="body1"
+            variant="body2"
             sx={{
               fontFamily: "Quicksand, sans-serif",
-              fontSize: "0.85rem",
-              fontWeight: "600",
-              lineHeight: "1.8",
+              fontSize: "0.875rem",
+              lineHeight: "1.6",
               marginBottom: "5px",
             }}
           >
-            Quantity:{" "}
-            <IconButton
-              size="small"
-              onClick={handleDecrement}
-              sx={{ color: "#1c1a40" }}
-              aria-label="reduce quantity"
-            >
-              <RemoveIcon />
-            </IconButton>{" "}
-            {quantity}{" "}
-            <IconButton
-              size="small"
-              onClick={handleIncrement}
-              sx={{ color: "#1c1a40" }}
-              aria-label="increase quantity"
-            >
-              <AddIcon />
-            </IconButton>
+            ${item.totalPrice.toFixed(2)}
           </Typography>
           <Typography
-            variant="body1"
+            variant="body2"
             sx={{
               fontFamily: "Quicksand, sans-serif",
-              fontSize: "0.9rem",
-              lineHeight: "1.8",
-              fontWeight: "bold",
-              marginTop: "10px",
+              fontSize: "0.875rem",
+              lineHeight: "1.6",
+              marginBottom: "5px",
             }}
           >
-            Total Price: ${item.totalPrice.toFixed(2)}
+            Quantity: {quantity}
           </Typography>
+          <IconButton onClick={handleDecrement} size="small">
+            <RemoveIcon />
+          </IconButton>
+          <IconButton onClick={handleIncrement} size="small">
+            <AddIcon />
+          </IconButton>
+          <IconButton onClick={openModal} size="small">
+            <AddIcon />
+          </IconButton>
         </CardContent>
       </Card>
       <Dialog
@@ -143,28 +148,17 @@ const ReservationCard: React.FC<{
         onClose={() => handleClose(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        className="confirmation"
       >
-        <DialogTitle id="alert-dialog-title">Remove Item?</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Remove Item?"}</DialogTitle>
         <DialogContent>
-          <Typography
-            variant="body1"
-            sx={{
-              fontFamily: "Quicksand, sans-serif",
-              fontSize: "1rem",
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          >
-            Are you sure you want to remove {item.title} from your reservation?
+          <Typography>
+            Are you sure you want to remove this item from your reservation?
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose(false)} color="primary">
-            No
-          </Button>
-          <Button onClick={() => handleClose(true)} color="primary" autoFocus>
-            Yes
+          <Button onClick={() => handleClose(false)}>Cancel</Button>
+          <Button onClick={() => handleClose(true)} color="error">
+            Remove
           </Button>
         </DialogActions>
       </Dialog>

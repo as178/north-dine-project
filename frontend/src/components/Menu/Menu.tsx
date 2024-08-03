@@ -21,6 +21,7 @@ const Menu: React.FC = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [dishes, setDishes] = useState<FoodItem[]>([]);
   const [drinks, setDrinks] = useState<FoodItem[]>([]);
+  const [fadeIn, setFadeIn] = useState(false);
 
   useEffect(() => {
     const loadFoodItems = async () => {
@@ -34,6 +35,14 @@ const Menu: React.FC = () => {
     };
 
     loadFoodItems();
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setFadeIn(true);
+    }, 200); // Delay before content fades in
+
+    return () => clearTimeout(timeout);
   }, []);
 
   const openModal = (itemId: string) => {
@@ -61,6 +70,8 @@ const Menu: React.FC = () => {
                 lineHeight: "1.6",
                 color: "#ffffff",
                 marginBottom: "65px",
+                opacity: fadeIn ? 1 : 0,
+                transition: "opacity 1s ease-in-out",
               }}
             >
               Indulge in a culinary journey with our menu showcasing savory
@@ -77,13 +88,26 @@ const Menu: React.FC = () => {
                     fontSize: { xs: "3rem", sm: "3.5rem" },
                     lineHeight: "1.2",
                     color: "#ffffff",
+                    opacity: fadeIn ? 1 : 0,
+                    transition: "opacity 1s ease-in-out",
                   }}
                 >
                   OUR DISHES
                 </Typography>
               </Grid>
-              {dishes.map((item) => (
-                <Grid item xs={12} sm={6} md={4} key={item.id}>
+              {dishes.map((item, index) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  key={item.id}
+                  sx={{
+                    opacity: fadeIn ? 1 : 0,
+                    transition: "opacity 1s ease-in-out",
+                    transitionDelay: `${index * 100}ms`, // Staggered delay for each card
+                  }}
+                >
                   <CardComponent
                     item={item}
                     openModal={() => openModal(item.id)}
@@ -100,13 +124,26 @@ const Menu: React.FC = () => {
                     lineHeight: "1.2",
                     marginTop: "40px",
                     color: "#ffffff",
+                    opacity: fadeIn ? 1 : 0,
+                    transition: "opacity 1s ease-in-out",
                   }}
                 >
                   OUR DRINKS
                 </Typography>
               </Grid>
-              {drinks.map((item) => (
-                <Grid item xs={12} sm={6} md={4} key={item.id}>
+              {drinks.map((item, index) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  key={item.id}
+                  sx={{
+                    opacity: fadeIn ? 1 : 0,
+                    transition: "opacity 1s ease-in-out",
+                    transitionDelay: `${(index + dishes.length) * 100}ms`, // Staggered delay for each card
+                  }}
+                >
                   <CardComponent
                     item={item}
                     openModal={() => openModal(item.id)}
@@ -120,6 +157,9 @@ const Menu: React.FC = () => {
               itemId={selectedItemId}
               modalOpen={modalOpen}
               closeModal={closeModal}
+              onAddFoodItem={() => {
+                throw new Error("Function not implemented.");
+              }} // Implement this function as needed
             />
           )}
         </Box>
