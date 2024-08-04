@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:80"  # Adjust as needed
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "5000:5000"  # Adjust as needed
+    environment:
+      REVIEW_DATABASE_CONNECTION_STRING: "sqlserver://sqlserver:1433;Database=ReviewDB;User Id=sa;Password=Phas3TwoProJECT#@578;"
+      FOOD_ITEM_DATABASE_CONNECTION_STRING: "sqlserver://sqlserver:1433;Database=FoodItemDB;User Id=sa;Password=Phas3TwoProJECT#@578;"
+      RESERVATION_DATABASE_CONNECTION_STRING: "sqlserver://sqlserver:1433;Database=ReservationDB;User Id=sa;Password=Phas3TwoProJECT#@578;"
+    depends_on:
+      - sqlserver  
+
+  sqlserver:
+    image: my_old_sqlserver_container
+    environment:
+      SA_PASSWORD: "Phas3TwoProJECT#@578"  # Set a strong password
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"  # Adjust as needed
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+volumes:
+  sqlserver_data:
+    driver: local
