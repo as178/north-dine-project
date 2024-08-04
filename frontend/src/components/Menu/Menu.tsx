@@ -5,12 +5,13 @@ import GradientOverlay from "../Home/GradientOverlay";
 import CardComponent from "./MenuCard";
 import ModalCardContainer from "../../containers/ModalCardContainer"; // Import the new container
 import { fetchFoodItems } from "../../services/foodItemService";
+import { ReservationItem } from "../../components/Reservation/ReservationCard";
 
 interface FoodItem {
-  id: string;
+  id: number; // Ensure 'id' is a number
   title: string;
   imageUrl: string;
-  description: string;
+  shortDescription: string; // This will be used as 'description'
   ingredients: string[];
   price: number;
   category: string;
@@ -18,7 +19,7 @@ interface FoodItem {
 
 const Menu: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const [dishes, setDishes] = useState<FoodItem[]>([]);
   const [drinks, setDrinks] = useState<FoodItem[]>([]);
   const [fadeIn, setFadeIn] = useState(false);
@@ -45,13 +46,18 @@ const Menu: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const openModal = (itemId: string) => {
+  const openModal = (itemId: number) => {
     setSelectedItemId(itemId);
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const handleAddFoodItem = (item: ReservationItem) => {
+    console.log("Food item added:", item);
+    // Implement logic to update local state or perform other actions if needed
   };
 
   return (
@@ -109,7 +115,11 @@ const Menu: React.FC = () => {
                   }}
                 >
                   <CardComponent
-                    item={item}
+                    item={{
+                      title: item.title,
+                      imageUrl: item.imageUrl,
+                      description: item.shortDescription, // Use shortDescription as description
+                    }}
                     openModal={() => openModal(item.id)}
                   />
                 </Grid>
@@ -145,21 +155,23 @@ const Menu: React.FC = () => {
                   }}
                 >
                   <CardComponent
-                    item={item}
+                    item={{
+                      title: item.title,
+                      imageUrl: item.imageUrl,
+                      description: item.shortDescription, // Use shortDescription as description
+                    }}
                     openModal={() => openModal(item.id)}
                   />
                 </Grid>
               ))}
             </Grid>
           </Container>
-          {selectedItemId && (
+          {selectedItemId !== null && (
             <ModalCardContainer
               itemId={selectedItemId}
               modalOpen={modalOpen}
               closeModal={closeModal}
-              onAddFoodItem={() => {
-                throw new Error("Function not implemented.");
-              }} // Implement this function as needed
+              onAddFoodItem={handleAddFoodItem} // Pass the implemented function
             />
           )}
         </Box>

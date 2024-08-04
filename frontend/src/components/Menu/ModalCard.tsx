@@ -12,25 +12,20 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { API_BASE_URL } from "../../config/config";
+import { FoodItem } from "../../services/foodItemService";
 
 interface ModalCardProps {
-  item: {
-    title: string;
-    imageUrl: string;
-    shortDescription: string;
-    ingredients: string[];
-    price: number;
-  } | null;
+  item: FoodItem | null;
   modalOpen: boolean;
   closeModal: () => void;
-  onAddToReservation: () => void; // Added prop
+  onAddToReservation: () => void;
 }
 
 const ModalCard: React.FC<ModalCardProps> = ({
   item,
   modalOpen,
   closeModal,
-  onAddToReservation, // Added prop
+  onAddToReservation,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -113,7 +108,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
               fontWeight: "bold",
             }}
           >
-            {item.shortDescription}
+            {item.shortDescription || "No description available"}
           </Typography>
           <Typography
             variant="body1"
@@ -129,7 +124,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
             Ingredients
           </Typography>
           <Box sx={{ marginTop: "10px" }}>
-            {item.ingredients.map((ingredient, index) => (
+            {(item.ingredients || []).map((ingredient, index) => (
               <Typography
                 key={index}
                 variant="body1"
@@ -160,7 +155,7 @@ const ModalCard: React.FC<ModalCardProps> = ({
           </Typography>
         </CardContent>
         <Button
-          onClick={onAddToReservation} // Use the prop here
+          onClick={onAddToReservation}
           variant="contained"
           sx={{
             fontWeight: "bold",

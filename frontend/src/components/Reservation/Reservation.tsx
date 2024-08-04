@@ -6,7 +6,10 @@ import ModalCardContainer from "../../containers/ModalCardContainer";
 import { ReservationItem } from "./ReservationCard";
 
 interface ReservationProps {
-  reservations: ReservationItem[] | undefined; // Adjusted type to include undefined
+  reservation: {
+    id: number;
+    reservationFoodItems: ReservationItem[];
+  };
   onAddFoodItem: (
     reservationId: number,
     foodItem: { foodItemId: number; quantity: number; totalPrice: number }
@@ -16,16 +19,18 @@ interface ReservationProps {
     foodItemId: number,
     quantity: number
   ) => Promise<void>;
+  onDeleteItem: (index: number) => Promise<void>;
 }
 
 const Reservation: React.FC<ReservationProps> = ({
-  reservations = [], // Default to an empty array if undefined
+  reservation,
   onAddFoodItem,
   onUpdateQuantity,
+  onDeleteItem,
 }) => {
   const [fadeIn, setFadeIn] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -36,9 +41,9 @@ const Reservation: React.FC<ReservationProps> = ({
   }, []);
 
   const handleAddFoodItem = async (item: ReservationItem) => {
-    if (item.id && selectedItemId) {
-      await onAddFoodItem(Number(selectedItemId), {
-        foodItemId: parseInt(item.id),
+    if (item.foodItemId && selectedItemId !== null) {
+      await onAddFoodItem(reservation.id, {
+        foodItemId: item.foodItemId,
         quantity: item.quantity,
         totalPrice: item.totalPrice,
       });
@@ -47,28 +52,23 @@ const Reservation: React.FC<ReservationProps> = ({
   };
 
   const handleQuantityChange = async (index: number, newQuantity: number) => {
-    const item = reservations[index];
-    if (item.id && newQuantity >= 0) {
-      await onUpdateQuantity(Number(item.id), parseInt(item.id), newQuantity);
+    const item = reservation.reservationFoodItems[index];
+    if (item.foodItemId && newQuantity >= 0) {
+      await onUpdateQuantity(reservation.id, item.foodItemId, newQuantity);
+      console.log(
+        `Quantity updated for item ${item.foodItemId}: ${newQuantity}`
+      );
     }
   };
 
-  const handleDeleteItem = (_index: number) => {
-    // Handle item removal logic
+  const handleDeleteItem = async (index: number) => {
+    await onDeleteItem(index);
+    console.log(`Item at index ${index} deleted.`);
   };
 
   const closeModal = () => {
     setModalOpen(false);
     setSelectedItemId(null);
-  };
-
-  // Hardcoded ReservationItem
-  const hardcodedItem: ReservationItem = {
-    id: "1",
-    quantity: 2,
-    totalPrice: 20.0,
-    title: "",
-    imageUrl: "",
   };
 
   return (
@@ -161,56 +161,40 @@ const Reservation: React.FC<ReservationProps> = ({
               >
                 YOUR RESERVATION'S ITEMS
               </Typography>
-              <div className="reservation-page">
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: {
-                      xs: "repeat(1, 1fr)",
-                      sm: "repeat(2, 1fr)",
-                      md: "repeat(3, 1fr)",
-                    },
-                    gap: 2,
-                  }}
-                >
-                  {/* Render the hardcoded card */}
-                  <ReservationCard
-                    key={hardcodedItem.id}
-                    item={hardcodedItem}
-                    index={0}
-                    onDelete={handleDeleteItem}
-                    onQuantityChange={handleQuantityChange}
-                    openModal={() => {
-                      setModalOpen(true);
-                      setSelectedItemId(hardcodedItem.id);
-                    }}
-                  />
-                  {/* Render the dynamic cards if there are reservations */}
-                  {reservations.length > 0 ? (
-                    reservations.map((item, index) => (
-                      <ReservationCard
-                        key={item.id}
-                        item={item}
-                        index={index}
-                        onDelete={handleDeleteItem}
-                        onQuantityChange={handleQuantityChange}
-                        openModal={() => {
-                          setModalOpen(true);
-                          setSelectedItemId(item.id);
-                        }}
-                      />
-                    ))
-                  ) : (
-                    <Typography>No reservations available.</Typography>
-                  )}
-                </Box>
-              </div>
+              <Box
+                sx={{
+                  maxHeight: "650px",
+                  overflowY: "auto",
+                  display: "grid",
+                  gridTemplateColumns: {
+                    xs: "repeat(1, 1fr)",
+                    sm: "repeat(2, 1fr)",
+                    md: "repeat(3, 1fr)",
+                  },
+                  gap: 2,
+                }}
+              >
+                {reservation.reservationFoodItems &&
+                reservation.reservationFoodItems.length > 0 ? (
+                  reservation.reservationFoodItems.map((item, index) => (
+                    <ReservationCard
+                      key={item.foodItemId}
+                      item={item}
+                      index={index}
+                      onDelete={() => handleDeleteItem(index)}
+                      onQuantityChange={(newQuantity) =>
+                        handleQuantityChange(index, newQuantity)
+                      }
+                      reservationId={reservation.id}
+                    />
+                  ))
+                ) : (
+                  <Typography> </Typography>
+                )}
+              </Box>
             </Grid>
             <Grid item xs={12} md={6}>
-              <ReservationForm
-                onAddFoodItem={handleAddFoodItem}
-                onUpdateQuantity={handleQuantityChange}
-              />
+              <ReservationForm />
             </Grid>
           </Grid>
         </Container>
@@ -219,7 +203,7 @@ const Reservation: React.FC<ReservationProps> = ({
         <ModalCardContainer
           modalOpen={modalOpen}
           closeModal={closeModal}
-          itemId={selectedItemId || ""}
+          itemId={selectedItemId}
           onAddFoodItem={handleAddFoodItem}
         />
       )}

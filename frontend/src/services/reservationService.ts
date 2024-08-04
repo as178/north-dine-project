@@ -18,10 +18,20 @@ export class ReservationService {
     }
   }
 
-  static async getReservationDetails(reservationId: number): Promise<ReservationItem[]> {
+  static async getReservationDetails(reservationId: number): Promise<{ id: number; reservationFoodItems: ReservationItem[] }> {
     try {
       const response = await axios.get(`${API_BASE_URL}/${reservationId}`);
-      return response.data;
+      const data = response.data;
+      return {
+        id: data.id,
+        reservationFoodItems: data.reservationFoodItems.map((item: any) => ({
+          foodItemId: item.foodItemId,
+          title: item.title,
+          quantity: item.quantity,
+          totalPrice: item.totalPrice,
+          imageUrl: item.imageUrl
+        }))
+      };
     } catch (error) {
       console.error('Failed to fetch reservation details:', error);
       throw error;
@@ -45,4 +55,16 @@ export class ReservationService {
       throw error;
     }
   }
+
+  static async removeFoodItemFromReservation(reservationId: number, foodItemId: number): Promise<void> {
+  try {
+    const url = `${API_BASE_URL}/${reservationId}/removeFoodItem/${foodItemId}`;
+    console.log('Attempting to delete from URL:', url);
+    await axios.delete(url);
+  } catch (error) {
+    console.error('Failed to remove food item from reservation:', error);
+    throw error;
+  }
+}
+
 }

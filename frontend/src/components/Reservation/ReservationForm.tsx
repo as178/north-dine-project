@@ -350,83 +350,85 @@ const ReservationForm: React.FC = () => {
             >
               SPECIAL REQUESTS
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                marginTop: "5px",
-                color: "#0e062b",
-                flex: 1,
-              }}
-            >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={specialRequests.romanticSetup}
-                    onChange={handleSpecialRequestChange}
-                    name="romanticSetup"
-                    color="primary"
-                  />
-                }
-                label="Romantic Setup"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={specialRequests.birthday}
-                    onChange={handleSpecialRequestChange}
-                    name="birthday"
-                    color="primary"
-                  />
-                }
-                label="Birthday"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={specialRequests.anniversary}
-                    onChange={handleSpecialRequestChange}
-                    name="anniversary"
-                    color="primary"
-                  />
-                }
-                label="Anniversary"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={specialRequests.engagement}
-                    onChange={handleSpecialRequestChange}
-                    name="engagement"
-                    color="primary"
-                  />
-                }
-                label="Engagement"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={specialRequests.wheelchairAccess}
-                    onChange={handleSpecialRequestChange}
-                    name="wheelchairAccess"
-                    color="primary"
-                  />
-                }
-                label="Wheelchair Access"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={specialRequests.allergyAccommodations}
-                    onChange={handleSpecialRequestChange}
-                    name="allergyAccommodations"
-                    color="primary"
-                  />
-                }
-                label="Allergy Accommodations"
-              />
-            </Box>
+            <div className="reservation-page">
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  marginTop: "5px",
+                  color: "#0e062b",
+                  flex: 1,
+                }}
+              >
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={specialRequests.romanticSetup}
+                      onChange={handleSpecialRequestChange}
+                      name="romanticSetup"
+                      color="primary"
+                    />
+                  }
+                  label="Romantic Setup"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={specialRequests.birthday}
+                      onChange={handleSpecialRequestChange}
+                      name="birthday"
+                      color="primary"
+                    />
+                  }
+                  label="Birthday"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={specialRequests.anniversary}
+                      onChange={handleSpecialRequestChange}
+                      name="anniversary"
+                      color="primary"
+                    />
+                  }
+                  label="Anniversary"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={specialRequests.engagement}
+                      onChange={handleSpecialRequestChange}
+                      name="engagement"
+                      color="primary"
+                    />
+                  }
+                  label="Engagement"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={specialRequests.wheelchairAccess}
+                      onChange={handleSpecialRequestChange}
+                      name="wheelchairAccess"
+                      color="primary"
+                    />
+                  }
+                  label="Wheelchair Access"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={specialRequests.allergyAccommodations}
+                      onChange={handleSpecialRequestChange}
+                      name="allergyAccommodations"
+                      color="primary"
+                    />
+                  }
+                  label="Allergy Accommodations"
+                />
+              </Box>
+            </div>
           </Box>
           <TextField
             label="SPECIAL NOTES"

@@ -109,59 +109,37 @@ namespace NorthDineRestaurant.Controllers
             return NoContent();
         }
 
-        // PUT: api/Reservation/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutReservation(int id, ReservationDto reservationDto)
+        // PUT: api/Reservation/1/updateFoodItem
+        [HttpPut("{reservationId}/updateFoodItem")]
+        public async Task<IActionResult> UpdateFoodItemQuantity(int reservationId, [FromBody] UpdateFoodItemQuantityDto dto)
         {
-            if (id != reservationDto.Id)
-            {
-                return BadRequest();
-            }
-
             var reservation = await _context.Reservations
                 .Include(r => r.ReservationFoodItems)
-                .FirstOrDefaultAsync(r => r.Id == id);
+                .FirstOrDefaultAsync(r => r.Id == reservationId);
 
             if (reservation == null)
             {
                 return NotFound();
             }
 
-            UpdateEntity(reservation, reservationDto);
-
-            // Fetch the food items and calculate TotalPrice
-            var foodItemIds = reservation.ReservationFoodItems.Select(rfi => rfi.FoodItemId).Distinct().ToList();
-            var foodItems = await _foodItemSet
-                .Where(fi => foodItemIds.Contains(fi.Id))
-                .ToListAsync();
-
-            var foodItemLookup = foodItems.ToDictionary(fi => fi.Id);
-
-            foreach (var rfi in reservation.ReservationFoodItems)
+            var foodItem = await _foodItemSet.FindAsync(dto.FoodItemId);
+            if (foodItem == null)
             {
-                if (foodItemLookup.TryGetValue(rfi.FoodItemId, out var foodItem))
-                {
-                    rfi.TotalPrice = rfi.Quantity * foodItem.Price;
-                }
+                return BadRequest("Food item not found.");
             }
 
-            _context.Entry(reservation).State = EntityState.Modified;
+            var reservationFoodItem = reservation.ReservationFoodItems
+                .FirstOrDefault(rfi => rfi.FoodItemId == dto.FoodItemId);
 
-            try
+            if (reservationFoodItem == null)
             {
-                await _context.SaveChangesAsync();
+                return NotFound("Food item not found in reservation.");
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ReservationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            reservationFoodItem.Quantity = dto.Quantity;
+            reservationFoodItem.TotalPrice = dto.Quantity * foodItem.Price;
+
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -214,6 +192,39 @@ namespace NorthDineRestaurant.Controllers
                 }).ToList()
             };
         }
+
+        // DELETE: api/Reservation/1/removeFoodItem/1
+        [HttpDelete("{reservationId}/removeFoodItem/{foodItemId}")]
+        public async Task<IActionResult> RemoveFoodItem(int reservationId, int foodItemId)
+        {
+            // Find the reservation
+            var reservation = await _context.Reservations
+                .Include(r => r.ReservationFoodItems)
+                .FirstOrDefaultAsync(r => r.Id == reservationId);
+
+            if (reservation == null)
+            {
+                return NotFound(); // Reservation not found
+            }
+
+            // Find the food item in the reservation
+            var reservationFoodItem = reservation.ReservationFoodItems
+                .FirstOrDefault(rfi => rfi.FoodItemId == foodItemId);
+
+            if (reservationFoodItem == null)
+            {
+                return NotFound(); // Food item not found in reservation
+            }
+
+            // Remove the food item
+            reservation.ReservationFoodItems.Remove(reservationFoodItem);
+
+            // Save changes
+            await _context.SaveChangesAsync();
+
+            return NoContent(); // Return 204 No Content on successful deletion
+        }
+
 
         private Reservation ToEntity(ReservationDto reservationDto)
         {
@@ -304,5 +315,11 @@ namespace NorthDineRestaurant.Controllers
         public bool? AllergyAccommodations { get; set; }
         public string? SpecialNotes { get; set; }
         public List<ReservationFoodItemDto> ReservationFoodItems { get; set; } = new List<ReservationFoodItemDto>();
+    }
+
+    public class UpdateFoodItemQuantityDto
+    {
+        public int FoodItemId { get; set; }
+        public int Quantity { get; set; }
     }
 }

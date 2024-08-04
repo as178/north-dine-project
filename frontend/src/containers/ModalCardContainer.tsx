@@ -1,22 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ModalCard from "../components/Menu/ModalCard";
-import { fetchFoodItems } from "../services/foodItemService";
+import { fetchFoodItemById, FoodItem } from "../services/foodItemService";
 import { ReservationService } from "../services/reservationService";
 import { Typography, Snackbar, IconButton, Alert } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { ReservationItem } from "../components/Reservation/ReservationCard";
 
-interface FoodItem {
-  id: string;
-  title: string;
-  imageUrl: string;
-  shortDescription: string;
-  ingredients: string[];
-  price: number;
-}
-
 export interface ModalCardContainerProps {
-  itemId: string | null; // Update to accept null
+  itemId: number | null; // Changed to number
   modalOpen: boolean;
   onAddFoodItem: (item: ReservationItem) => void;
   closeModal: () => void;
@@ -34,15 +25,12 @@ const ModalCardContainer: React.FC<ModalCardContainerProps> = ({
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
 
   const loadItem = useCallback(async () => {
-    if (itemId) {
+    if (itemId !== null) {
       setLoading(true);
       setError(null);
 
       try {
-        const foodItems = await fetchFoodItems();
-        const selectedItem = foodItems.find(
-          (item: FoodItem) => item.id === itemId
-        );
+        const selectedItem = await fetchFoodItemById(itemId);
         setItem(selectedItem || null);
       } catch (error) {
         console.error("Failed to load item:", error);
@@ -67,23 +55,48 @@ const ModalCardContainer: React.FC<ModalCardContainerProps> = ({
         const reservationId =
           await ReservationService.getCurrentReservationId();
         if (reservationId) {
-          const totalPrice = item.price; // Calculate total price as needed
-          await ReservationService.addFoodItemToReservation(reservationId, {
-            foodItemId: parseInt(item.id, 10),
-            quantity: 1,
-            totalPrice,
-          });
+          const existingReservationDetails =
+            await ReservationService.getReservationDetails(reservationId);
+          const existingItem =
+            existingReservationDetails.reservationFoodItems.find(
+              (i) => i.foodItemId === item.id
+            );
+
+          if (existingItem) {
+            const newQuantity = existingItem.quantity + 1;
+            const totalPrice = item.price * newQuantity;
+            await ReservationService.updateFoodItemQuantity(
+              reservationId,
+              item.id,
+              newQuantity
+            );
+            onAddFoodItem({
+              title: item.title,
+              quantity: newQuantity,
+              totalPrice,
+              imageUrl: item.imageUrl,
+              foodItemId: item.id,
+            });
+          } else {
+            const totalPrice = item.price;
+            await ReservationService.addFoodItemToReservation(reservationId, {
+              foodItemId: item.id,
+              quantity: 1,
+              totalPrice,
+            });
+            onAddFoodItem({
+              title: item.title,
+              quantity: 1,
+              totalPrice,
+              imageUrl: item.imageUrl,
+              foodItemId: item.id,
+            });
+          }
+
           setSnackbarOpen(true);
           setTimeout(() => {
             setSnackbarOpen(false);
           }, 2000);
-          onAddFoodItem({
-            title: item.title,
-            quantity: 1,
-            totalPrice,
-            imageUrl: item.imageUrl,
-            id: "",
-          });
           closeModal();
         } else {
           console.error("No reservation ID found");
